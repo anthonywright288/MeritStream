@@ -1,0 +1,20 @@
+# Environment files (keep example templates)
+.env*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Build output
+.next/
+dist/
+build/
+out/
+
+# Deployment / local tooling
+.vercel/
+*.log
+
+# Claude local config (keep shared rules only)
+.claude/*
+!.claude/rules/
