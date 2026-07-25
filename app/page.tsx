@@ -5,6 +5,12 @@ export default function Home() {
       <p className="text-muted-foreground">
         GitHub signals in, weighted USDC splits out, one batch settlement.
       </p>
+      <a
+        href="/create"
+        className="bg-primary text-primary-foreground rounded-md px-6 py-2 text-sm font-medium"
+      >
+        Create a team →
+      </a>
     </main>
   );
 }
