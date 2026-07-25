@@ -55,9 +55,20 @@ Plus 5 property tests added by tester (huge pool, 100-member skew, zero pool, du
 
 `npm test` 16/16 green + `npm run build` clean AFTER all fixes (final run 2026-07-24 16:26, re-verified with commit state below).
 
-## Step 6/7 — Commits
+## Step 6/7 — Commits (explicit paths, no `git add -A`)
 
-See `git log --oneline` + clean `git status` appended after commit (this file committed with the phase).
+```
+08dde31 docs: add v1 plan with red-team review, phase 1 audit, and errata
+1e574b2 feat: add Supabase schema with RT constraints, RLS, and clients
+628c5a3 feat: add GitHub signal fetchers and points formula with tests
+35c80ab feat: add Arc chain client, HD pool wallet derivation, and gas verify script
+3173092 feat: scaffold Next.js 16 skeleton with Tailwind v4 and shadcn
+6ef856e docs: add MeritStream PRD and plan templates
+cad5967 feat: add claude workspace config and workflow rules
+```
+`git status`: nothing to commit, working tree clean. Secret scan pre-commit: clean
+(.env.local untracked, only variable-name references in docs). Push to origin pending user OK.
+(This audit file's own commit hash follows it — the log above was captured at commit time.)
 
 ## Unresolved questions
 
