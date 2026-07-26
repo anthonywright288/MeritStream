@@ -28,6 +28,8 @@ export interface SignalsDto {
   teamName: string;
   repo: string;
   cycle: string;
+  commitWeight: number;
+  prWeight: number;
   window: { start: string; end: string };
   daysUntilSettlement: number;
   poolAddress: string;
@@ -49,18 +51,22 @@ export async function loadSignals(
   { strict }: { strict: boolean },
 ): Promise<SignalsDto | null> {
   const db = supabaseAdmin();
-  const { data: team } = await db
+  // A DB/connection error must NOT masquerade as "team not found" (404):
+  // throw so callers surface 502 and the real cause is visible.
+  const { data: team, error: teamError } = await db
     .from("teams")
     .select("id, name, repo, commit_weight, pr_weight, cycle, pool_address, created_at")
     .eq("id", teamId)
     .maybeSingle();
+  if (teamError) throw new Error(`db teams query failed: ${teamError.message}`);
   if (!team) return null;
 
-  const { data: members } = await db
+  const { data: members, error: membersError } = await db
     .from("members")
     .select("id, github_username, wallet_address, created_at")
     .eq("team_id", teamId)
     .order("created_at", { ascending: true });
+  if (membersError) throw new Error(`db members query failed: ${membersError.message}`);
   if (!members?.length) return null;
 
   const window = cycleWindow(team.created_at, team.cycle, null);
@@ -109,6 +115,8 @@ export async function loadSignals(
     teamName: team.name,
     repo: team.repo,
     cycle: team.cycle,
+    commitWeight: Number(team.commit_weight),
+    prWeight: Number(team.pr_weight),
     window: { start: window.start.toISOString(), end: untilISO },
     daysUntilSettlement: daysUntil(window.end),
     poolAddress: team.pool_address,
