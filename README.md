@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MeritStream
 
-## Getting Started
+> GitHub signals in, weighted USDC splits out, one automated settlement on Arc.
 
-First, run the development server:
+A payout agent that turns contribution into compensation. Connect a public
+GitHub repo, register members with their wallets, fund a pool in USDC. Each
+cycle the agent counts real work (commits + merged PRs per member), computes
+weighted shares with a deterministic formula (zero LLM), and pays every member
+in USDC on Arc Testnet — every payout links back to the exact commits that
+earned it.
+
+**Live:** https://meritstream-six.vercel.app
+
+## How it works
+
+- Signals: `commits` (1 pt) and `merged PRs` (3 pts) per member, weights
+  configurable. Public GitHub REST, no OAuth.
+- Split: `amount_i = floor(distributable * points_i / totalPoints)` in USDC
+  base units (bigint end-to-end); `distributable = pool − 1 USDC gas buffer`;
+  rounding dust stays in the pool.
+- Settlement: Vercel Cron (daily) or the admin "Settle now" button. The engine
+  freezes an immutable signal snapshot, then pays sequentially with per-payout
+  resume safety (a crash can never double-pay).
+- Gas on Arc is USDC itself (~0.0018 USDC per transfer, measured) — one asset
+  for pool, payouts, and fees.
+
+## Pages
+
+| Route | What |
+|-------|------|
+| `/create` | Create a team (repo, members, weights, cycle). Shows the pool address + one-time admin token |
+| `/team/[id]` | Live dashboard: points, projected shares, pool balance, Settle now |
+| `/team/[id]/history` | Audit trail: frozen snapshots, per-member tx hashes on Arc explorer |
+| `/t/[teamId]` | Public read-only transparency view — share it with contributors |
+
+## Setup
 
 ```bash
+npm install
+cp .env.example .env.local   # fill in the values below
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Env (`.env.local`): Arc RPC/chain/USDC constants (defaults work),
+`POOL_WALLET_MNEMONIC` (HD wallet — one mnemonic derives every team's pool),
+`GITHUB_TOKEN` (rate limit 60→5000/h), `CRON_SECRET`, Supabase URL + keys.
+Apply `db/schema.sql` then `db/migrations/*.sql` in the Supabase SQL editor.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Tests: `npm test` (40 vitest — money math, resume safety, window rules).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deploying
 
-## Learn More
+The Vercel project is **CLI-linked, NOT git-connected** (repo and Vercel live
+on different accounts, so git auto-deploy is unavailable). Pushing to GitHub
+does **not** deploy. To ship:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npx vercel deploy --prod --yes
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Env vars live in Vercel project settings (beware: values must be BOM-free and
+newline-free — see `plans/PHASE3-AUDIT.md` for the incident). Cron is
+registered from `vercel.json` (daily — Vercel Hobby maximum; on-stage timing
+uses Settle now).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Demo
 
-## Deploy on Vercel
+Follow `docs/demo-runbook.md` — a 3-minute script including the failure path
+(double-settle → 409) and required wallet balances.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Design notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Architecture, red-team review (12 accepted findings), and per-phase audit
+evidence live in `plans/`. The PRD is `MeritStream-PRD-EN.md`.

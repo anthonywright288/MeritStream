@@ -12,7 +12,18 @@ type SignalsResponse = SignalsDto & { syncedAt: string };
 
 const POLL_MS = 60_000;
 
-export function DashboardView({ teamId }: { teamId: string }) {
+/**
+ * readOnly = the public /t/[teamId] transparency view: same live data, ZERO
+ * mutation controls (no Settle button, no token prompt) and nothing
+ * admin-only in the payload — the signals endpoint is already public data.
+ */
+export function DashboardView({
+  teamId,
+  readOnly = false,
+}: {
+  teamId: string;
+  readOnly?: boolean;
+}) {
   const [data, setData] = useState<SignalsResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -73,7 +84,14 @@ export function DashboardView({ teamId }: { teamId: string }) {
         </div>
       </div>
 
-      <SettleNowButton teamId={teamId} onSettled={refresh} />
+      {readOnly ? (
+        <p className="text-muted-foreground text-xs">
+          Public transparency view — read-only. Every number below is derived
+          from public GitHub data and the on-chain pool balance.
+        </p>
+      ) : (
+        <SettleNowButton teamId={teamId} onSettled={refresh} />
+      )}
 
       <Card>
         <CardContent className="flex flex-wrap gap-6 py-4 text-sm">
