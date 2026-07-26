@@ -43,36 +43,59 @@ export async function runSettlement(
     .maybeSingle();
   if (!team) return { code: 404, status: "error", detail: "team not found" };
 
-  const { data: last } = await db
+  // [RT-H1][RT-C4] RESUME-FIRST: an unfinished settlement (crashed running,
+  // partial, insufficient_funds) must be re-attached by ITS OWN window —
+  // recomputing cycle_end here would never match the stored row, stranding it
+  // forever and risking a second settlement over the same signals
+  // (production bug 2026-07-26). Only when none exists do we derive a new window.
+  const { data: openRows, error: openError } = await db
     .from("settlements")
-    .select("cycle_end")
+    .select("cycle_start, cycle_end, status")
     .eq("team_id", teamId)
-    .in("status", ["paid", "no_activity"])
+    .in("status", ["running", "partial", "insufficient_funds"])
     .order("cycle_end", { ascending: false })
     .limit(1);
-  const window = cycleWindow(team.created_at, team.cycle, last?.[0]?.cycle_end ?? null, now);
+  if (openError) return { code: 500, status: "error", detail: openError.message };
+  const openSettlement = openRows?.[0] ?? null;
 
-  if (!force && window.end.getTime() > now.getTime()) {
-    return { code: 409, status: "not_due", detail: "cycle still open; use force to settle early" };
+  let windowStart: Date;
+  let cycleEnd: Date;
+  if (openSettlement) {
+    windowStart = new Date(openSettlement.cycle_start);
+    cycleEnd = new Date(openSettlement.cycle_end); // claim re-targets THIS row
+  } else {
+    const { data: last } = await db
+      .from("settlements")
+      .select("cycle_end")
+      .eq("team_id", teamId)
+      .in("status", ["paid", "no_activity"])
+      .order("cycle_end", { ascending: false })
+      .limit(1);
+    const window = cycleWindow(team.created_at, team.cycle, last?.[0]?.cycle_end ?? null, now);
+
+    if (!force && window.end.getTime() > now.getTime()) {
+      return { code: 409, status: "not_due", detail: "cycle still open; use force to settle early" };
+    }
+    // Idempotency for rapid re-force (user constraint #3): a force right after
+    // a completed settle would open a near-empty [lastEnd, now] window and mint
+    // a junk settlement row. Refuse until the new window has meaningful age.
+    const MIN_FORCE_WINDOW_MS = 60_000;
+    if (force && now.getTime() - window.start.getTime() < MIN_FORCE_WINDOW_MS) {
+      return {
+        code: 409,
+        status: "already_settled",
+        detail: "cycle was just settled — nothing new to settle yet",
+      };
+    }
+    windowStart = window.start;
+    // [RT-H2] forced settle truncates: recorded cycle_end = now
+    cycleEnd = force && window.end.getTime() > now.getTime() ? now : window.end;
   }
-  // Idempotency for rapid re-force (user constraint #3): a force right after
-  // a completed settle would open a near-empty [lastEnd, now] window and mint
-  // a junk settlement row. Refuse until the new window has meaningful age.
-  const MIN_FORCE_WINDOW_MS = 60_000;
-  if (force && now.getTime() - window.start.getTime() < MIN_FORCE_WINDOW_MS) {
-    return {
-      code: 409,
-      status: "already_settled",
-      detail: "cycle was just settled — nothing new to settle yet",
-    };
-  }
-  // [RT-H2] forced settle truncates: recorded cycle_end = now
-  const cycleEnd = force && window.end.getTime() > now.getTime() ? now : window.end;
 
   // [RT-C3] atomic claim — exactly one concurrent invocation proceeds
   const { data: claims, error: claimError } = await db.rpc("claim_settlement", {
     p_team_id: teamId,
-    p_cycle_start: window.start.toISOString(),
+    p_cycle_start: windowStart.toISOString(),
     p_cycle_end: cycleEnd.toISOString(),
   });
   if (claimError || !claims?.length) {
