@@ -20,3 +20,6 @@ next-env.d.ts
 # Claude local config (keep shared rules only)
 .claude/*
 !.claude/rules/
+
+.vercel
+.env*
