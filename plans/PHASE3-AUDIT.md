@@ -58,9 +58,20 @@ Unauthenticated production URL (no Vercel login): `/`, `/create`, `/team/75pw8g1
 
 `e70278e` engine + migration 003 + regression tests; `88c1a44` routes + history UI + vercel.json; audit + fixes committed after production verification (hashes in final `git log` below). Working tree clean at close.
 
-## Step 4 addendum — resume-after-partial (constraint #5) LIVE
+## Step 4 addendum — resume-after-partial (constraint #5) LIVE, production
 
-(recorded after the audit-commit push that provides the window's signals — see final section of this file)
+**A third real bug found & fixed by this test** (the exact class RT-H1/C4 predicted): resume recomputed `cycle_end`, so the claim NEVER matched the stored partial row — it minted a NEW settlement (money paid once only by luck of the drained balance) and stranded the partial forever. Fix `c6a49e6`: resume-first — an open settlement (stale running/partial/insufficient_funds) is re-attached by ITS OWN stored window before any new window is derived.
+
+**Definitive regression, all on production, after the fix:**
+1. Member wallet corrupted via DB (bypassing API validation) -> settle -> `partial`, settlement `0aa924c4`, frozen amount **1,998,995**, payout `failed`, ZERO broadcasts.
+2. Wallet fixed via `PATCH /api/teams/[id]` (audit row logged old->new).
+3. Settle again -> **SAME settlement id `0aa924c4`**, status `paid`, payout amount **1,998,995 == frozen snapshot exactly** (no re-freeze, no drift), dest = corrected wallet, one tx.
+4. `member_wallet_audit`: 2 rows (both wallet fixes), timestamps ordered.
+5. Cross-test money total: member balance 10,000 -> 2,010,000 -> 4,009,009 -> +1,998,995 — every increment equals exactly one snapshot amount; zero double-pays across ~10 settle invocations including double-clicks, partials, resumes.
+
+## Step 6b — Judge's-eye final check (unauthenticated, no Vercel session)
+
+`/`, `/create`, `/team/75pw8g1f`, `/team/75pw8g1f/history`, `/api/teams/75pw8g1f/signals` -> ALL HTTP 200, zero redirects to vercel.com login. Production URL: **https://meritstream-six.vercel.app**
 
 ## Unresolved questions
 

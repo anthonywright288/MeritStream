@@ -31,7 +31,7 @@ Payout agent: GitHub commits + merged PRs per member -> weighted points -> USDC 
 |---|-------|--------|-----------|
 | 1 | [Skeleton, HD signer + gas verify, GitHub fetchers, points](phase-01-skeleton-signer-github-fetchers-points.md) | **completed** (audit: `plans/PHASE1-AUDIT.md`) | — |
 | 2 | [Create-team flow + dashboard (live signals)](phase-02-create-team-flow-and-dashboard.md) | **completed** (audit: `plans/PHASE2-AUDIT.md`) | Phase 1 |
-| 3 | [DEPLOY-FIRST + settlement engine + cron + history](phase-03-settlement-engine-cron-and-history.md) | pending | Phase 1, 2 |
+| 3 | [DEPLOY-FIRST + settlement engine + cron + history](phase-03-settlement-engine-cron-and-history.md) | **completed** (audit: `plans/PHASE3-AUDIT.md`; prod: meritstream-six.vercel.app) | Phase 1, 2 |
 | 4 | [Public page, polish, final redeploy, demo](phase-04-public-page-polish-deploy.md) | pending | Phase 1-3 |
 
 ## Key cross-phase dependencies
