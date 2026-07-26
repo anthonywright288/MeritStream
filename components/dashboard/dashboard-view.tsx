@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MemberCard } from "@/components/dashboard/member-card";
+import { SettleNowButton } from "@/components/dashboard/settle-now-button";
 import { formatUsdcDisplay, timeAgo } from "@/lib/format/format-usdc-display";
 import type { SignalsDto } from "@/lib/teams/load-signals";
 
@@ -66,8 +67,13 @@ export function DashboardView({ teamId }: { teamId: string }) {
           <Button size="sm" variant="outline" onClick={refresh}>
             Refresh
           </Button>
+          <a href={`/team/${teamId}/history`} className="text-xs text-blue-500 hover:underline">
+            History
+          </a>
         </div>
       </div>
+
+      <SettleNowButton teamId={teamId} onSettled={refresh} />
 
       <Card>
         <CardContent className="flex flex-wrap gap-6 py-4 text-sm">

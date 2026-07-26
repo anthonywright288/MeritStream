@@ -28,6 +28,10 @@ export async function GET(
     });
   } catch (error) {
     console.error("signals failed:", error);
-    return NextResponse.json({ error: "signals unavailable" }, { status: 502 });
+    const detail = error instanceof Error ? error.message : "unknown";
+    return NextResponse.json(
+      { error: "signals unavailable", detail },
+      { status: 502 },
+    );
   }
 }
