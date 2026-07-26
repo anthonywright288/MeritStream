@@ -55,6 +55,17 @@ export async function runSettlement(
   if (!force && window.end.getTime() > now.getTime()) {
     return { code: 409, status: "not_due", detail: "cycle still open; use force to settle early" };
   }
+  // Idempotency for rapid re-force (user constraint #3): a force right after
+  // a completed settle would open a near-empty [lastEnd, now] window and mint
+  // a junk settlement row. Refuse until the new window has meaningful age.
+  const MIN_FORCE_WINDOW_MS = 60_000;
+  if (force && now.getTime() - window.start.getTime() < MIN_FORCE_WINDOW_MS) {
+    return {
+      code: 409,
+      status: "already_settled",
+      detail: "cycle was just settled — nothing new to settle yet",
+    };
+  }
   // [RT-H2] forced settle truncates: recorded cycle_end = now
   const cycleEnd = force && window.end.getTime() > now.getTime() ? now : window.end;
 

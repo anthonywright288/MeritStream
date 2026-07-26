@@ -69,7 +69,22 @@ export async function loadSignals(
   if (membersError) throw new Error(`db members query failed: ${membersError.message}`);
   if (!members?.length) return null;
 
-  const window = cycleWindow(team.created_at, team.cycle, null);
+  // The open window starts AFTER the last settled cycle — without this, a
+  // paid commit would be counted (and paid) again next cycle. Regression from
+  // production settle #2 on 2026-07-26.
+  const { data: lastSettled, error: lastError } = await db
+    .from("settlements")
+    .select("cycle_end")
+    .eq("team_id", teamId)
+    .in("status", ["paid", "no_activity"])
+    .order("cycle_end", { ascending: false })
+    .limit(1);
+  if (lastError) throw new Error(`db settlements query failed: ${lastError.message}`);
+  const window = cycleWindow(
+    team.created_at,
+    team.cycle,
+    lastSettled?.[0]?.cycle_end ?? null,
+  );
   const untilISO = window.end.toISOString();
 
   const fetched = await Promise.all(
