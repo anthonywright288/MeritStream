@@ -1,7 +1,7 @@
 # PRD Errata
 
 Deliberate, user-approved deviations from `MeritStream-PRD-EN.md`. External-fact
-conflicts (per PRD CONFLICT PROTOCOL) would also land here — none found so far:
+conflicts (per PRD CONFLICT PROTOCOL) would also land here, none found so far:
 all PRD external facts verified correct on 2026-07-24 (chain 5042002, RPC, USDC
 address/decimals, Multicall3From bytecode, GitHub endpoints, npm packages).
 
@@ -29,6 +29,6 @@ table in `plans/260724-1157-meritstream-v1/plan.md`.
 - **Gas-in-USDC: CONFIRMED 2026-07-25** by real tx
   `0x856710364c8c29d869d8a2c7dc35051f12c90dc0eb90a703cc2c85aa485007b8`
   (status success). Measured: 1,849 base units = 0.001849 USDC per transfer
-  (gasUsed 73,938 x 25 gwei; native decimals 18 confirmed — native fee raw
+  (gasUsed 73,938 x 25 gwei; native decimals 18 confirmed, native fee raw
   1848450000000000 / 1e18 matches the ERC-20 delta). 1 USDC buffer covers
-  ~540 transfers. No errata needed — PRD assumption stands.
+  ~540 transfers. No errata needed, PRD assumption stands.

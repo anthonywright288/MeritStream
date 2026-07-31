@@ -22,22 +22,22 @@
 ### All Tests Passed (14/14)
 
 #### Core Test Matrix (Original 9 cases from Phase Plan)
-1. ✅ `splits the PRD example exactly (70/42/28 pts of 1000 USDC -> 500/300/200)` — Normal 3-member split
-2. ✅ `zero total points -> noActivity, zero amounts, dust == pool, no throw` — Zero activity cycle
-3. ✅ `rounding dust — amounts + dust == poolBaseUnits (indivisible pool)` — Rounding behavior with 3 equal members
-4. ✅ `single member gets 100%` — Single member allocation
-5. ✅ `member with 0 points among active members gets 0` — Zero-point member in mixed pool
-6. ✅ `fully funded pool passes the settlement balance gate when shares use distributable [RT-C1]` — Buffer validation regression test
-7. ✅ `rejects fractional weights before any bigint math [RT-M1]` — Weight validation (fractional)
-8. ✅ `zero for BOTH weights -> noActivity path, no division by zero [RT-M1]` — Edge case: both weights = 0
-9. ✅ `rejects negative weights [RT-M1]` — Weight validation (negative)
+1. ✅ `splits the PRD example exactly (70/42/28 pts of 1000 USDC -> 500/300/200)`: Normal 3-member split
+2. ✅ `zero total points -> noActivity, zero amounts, dust == pool, no throw`: Zero activity cycle
+3. ✅ `rounding dust, amounts + dust == poolBaseUnits (indivisible pool)`: Rounding behavior with 3 equal members
+4. ✅ `single member gets 100%`: Single member allocation
+5. ✅ `member with 0 points among active members gets 0`: Zero-point member in mixed pool
+6. ✅ `fully funded pool passes the settlement balance gate when shares use distributable [RT-C1]`: Buffer validation regression test
+7. ✅ `rejects fractional weights before any bigint math [RT-M1]`: Weight validation (fractional)
+8. ✅ `zero for BOTH weights -> noActivity path, no division by zero [RT-M1]`: Edge case: both weights = 0
+9. ✅ `rejects negative weights [RT-M1]`: Weight validation (negative)
 
 #### Additional Edge Cases (New, to stress-test property invariant)
-10. ✅ `rejects negative pool` — Input validation
-11. ✅ `property: huge pool (near 2^256) maintains sum(amounts) + dust == pool` — Cryptographically realistic pool sizes
-12. ✅ `property: many members with highly uneven distribution` — Whale + 99 minnows (100 members)
-13. ✅ `property: zero pool -> dust == 0, all amounts 0` — Boundary: empty pool
-14. ✅ `property: single point distributed to large pool -> rounding` — Precision stress test (1 point × 3 members across 10B base units)
+10. ✅ `rejects negative pool`: Input validation
+11. ✅ `property: huge pool (near 2^256) maintains sum(amounts) + dust == pool`: Cryptographically realistic pool sizes
+12. ✅ `property: many members with highly uneven distribution`: Whale + 99 minnows (100 members)
+13. ✅ `property: zero pool -> dust == 0, all amounts 0`: Boundary: empty pool
+14. ✅ `property: single point distributed to large pool -> rounding`: Precision stress test (1 point × 3 members across 10B base units)
 
 ---
 
@@ -128,7 +128,7 @@ Route (app)
 - **app/** files: ✅ No errors
 - **scripts/** files: (not run; no violations expected)
 
-Note: `.claude/hooks/` infrastructure files show ESLint warnings (CommonJS `require()` style in `.cjs` files) — these are expected and outside the app codebase.
+Note: `.claude/hooks/` infrastructure files show ESLint warnings (CommonJS `require()` style in `.cjs` files), these are expected and outside the app codebase.
 
 ---
 
@@ -151,7 +151,7 @@ All tests pass. Build clean. Coverage complete.
 
 2. **Integration Tests (Deferred):** 
    - Manual testing of GitHub fetchers against a real repo with known activity in a fixed window
-   - Real gas-verify tx (step 9 of phase plan) — not automated in Phase 1 (needs funded wallet)
+   - Real gas-verify tx (step 9 of phase plan), not automated in Phase 1 (needs funded wallet)
 
 3. **Regression Tracking:**
    - Test 6 covers [RT-C1] buffer double-count bug regression

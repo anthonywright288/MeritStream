@@ -1,4 +1,4 @@
-# Phase 1 — Skeleton, HD Signer + Gas Verify, GitHub Fetchers, Points Formula
+# Phase 1: Skeleton, HD Signer + Gas Verify, GitHub Fetchers, Points Formula
 
 ## Context Links
 - PRD: `MeritStream-PRD-EN.md` sections 2, 3, 6, 8 (Day 1), appendix env.
@@ -13,7 +13,7 @@
 ## Key Insights
 - Arc RPC rate-limits aggressively (~4 rapid reqs). Every chain read/write MUST go through one retry/backoff wrapper. Transfers are sequential, each awaiting its receipt.
 - `pulls?state=closed` INCLUDES unmerged PRs (`merged_at: null`) and defaults to `sort=created`. Must filter `merged_at != null` AND `merged_at` within cycle window, and paginate (per_page=100, follow until short page).
-- `commits?author=&since=&until=` returns commits by GitHub-linked email; unlinked-email commits are invisible (PRD caveat — surface to users later).
+- `commits?author=&since=&until=` returns commits by GitHub-linked email; unlinked-email commits are invisible (PRD caveat, surface to users later).
 - Gas-in-USDC is an assumption. If the verification tx shows a native-token gas deduction / fails for missing native balance -> STOP, write `plans/PRD-ERRATA.md`, do not work around.
 - Tailwind v4 uses CSS-first config (`@import "tailwindcss"` + `@theme`), NOT `tailwind.config.js` v3 patterns. shadcn CLI latest targets v4.
 - USDC is 6 decimals: 1 USDC = `1_000_000` base units. All money math in base units (bigint), never floats.
@@ -24,12 +24,12 @@
 - FR2: Supabase schema applied = PRD 6b + deltas:
   - `teams.wallet_index INT UNIQUE`, `teams.admin_token_hash TEXT`.
   - `[RT-C2]` `payouts.status TEXT DEFAULT 'pending'` allows `pending|sending|paid|failed` (was `pending|paid|failed`; `sending` = broadcast issued, receipt not yet confirmed).
-  - `[RT-C2]` `payouts.tx_hash TEXT NULLABLE` — **deliberate deviation from PRD 6b (NOT NULL)**. Reason: a payout row is written BEFORE its transfer is broadcast, so tx_hash is null until broadcast. Record in `plans/PRD-ERRATA.md`.
-  - `[RT-H4]` `payouts.dest_address TEXT` — the ACTUAL destination address the transfer paid (recorded at send time from the CURRENT member wallet). It is the real audit trail and may differ from the frozen snapshot wallet if the member's wallet was edited between freeze and pay.
+  - `[RT-C2]` `payouts.tx_hash TEXT NULLABLE`, **deliberate deviation from PRD 6b (NOT NULL)**. Reason: a payout row is written BEFORE its transfer is broadcast, so tx_hash is null until broadcast. Record in `plans/PRD-ERRATA.md`.
+  - `[RT-H4]` `payouts.dest_address TEXT`, the ACTUAL destination address the transfer paid (recorded at send time from the CURRENT member wallet). It is the real audit trail and may differ from the frozen snapshot wallet if the member's wallet was edited between freeze and pay.
   - `[RT-C3]` `settlements.status` allows `running|paid|no_activity|partial|insufficient_funds` (added `running` = a run has claimed this settlement and is mid-flight).
-  - `[RT-C3]` `UNIQUE(team_id, cycle_end)` on `settlements` — backs idempotent settlement create.
-  - `[RT-C3]` `UNIQUE(settlement_id, member_id)` on `payouts` — backs idempotent payout upsert (one payout per member per settlement).
-  - `[RT-H3]` `members.created_at TIMESTAMPTZ DEFAULT NOW()` — **deviation from PRD 6b (absent)**. Reason: mid-cycle join rule needs a per-member join timestamp; record in `plans/PRD-ERRATA.md`.
+  - `[RT-C3]` `UNIQUE(team_id, cycle_end)` on `settlements`, backs idempotent settlement create.
+  - `[RT-C3]` `UNIQUE(settlement_id, member_id)` on `payouts`, backs idempotent payout upsert (one payout per member per settlement).
+  - `[RT-H3]` `members.created_at TIMESTAMPTZ DEFAULT NOW()`, **deviation from PRD 6b (absent)**. Reason: mid-cycle join rule needs a per-member join timestamp; record in `plans/PRD-ERRATA.md`.
 - FR3: `deriveTeamPoolAccount(index)` returns a viem account from `POOL_WALLET_MNEMONIC` at `addressIndex=index`.
 - FR4: Chain client reads USDC `decimals()` (=6) and an address balance, through retry/backoff.
 - FR5: A one-off script performs a REAL USDC transfer on Arc from a funded pool address, awaits receipt, prints tx hash + gas token used. Confirms gas-in-USDC.
@@ -85,8 +85,8 @@ All RPC --> lib/wallet/rpc-retry.ts (backoff wrapper)
 3. Install deps: `viem@2`, `@supabase/supabase-js@2`, `vitest`, `@types/node`. Add `vitest.config.ts` and `"test": "vitest run"` script.
 4. Write `.env.example` with the env deltas (below). Copy to `.env.local` locally, fill Supabase + `POOL_WALLET_MNEMONIC` (a fresh throwaway mnemonic) + optional `GITHUB_TOKEN`.
 5. Create `db/schema.sql` = PRD 6b + deltas. Apply via Supabase SQL editor. Verify tables exist.
-6. `lib/arc/chain.ts`: `defineChain({ id: 5042002, rpcUrls: { default: { http: [process.env.NEXT_PUBLIC_ARC_RPC_URL] } }, nativeCurrency: { name:'USDC', symbol:'USDC', decimals:18 } })` — note: native decimals unknown yet; Step 9 confirms. Export a `publicClient`.
-7. `lib/wallet/rpc-retry.ts`: `withRetry` — catch errors, exponential backoff (base 500ms, factor 2, max 5 tries), rethrow after exhaustion. Every RPC in codebase goes through it.
+6. `lib/arc/chain.ts`: `defineChain({ id: 5042002, rpcUrls: { default: { http: [process.env.NEXT_PUBLIC_ARC_RPC_URL] } }, nativeCurrency: { name:'USDC', symbol:'USDC', decimals:18 } })`, note: native decimals unknown yet; Step 9 confirms. Export a `publicClient`.
+7. `lib/wallet/rpc-retry.ts`: `withRetry`, catch errors, exponential backoff (base 500ms, factor 2, max 5 tries), rethrow after exhaustion. Every RPC in codebase goes through it.
 8. `lib/wallet/usdc.ts` + `lib/wallet/derive-pool-account.ts`: ERC-20 ABI subset; `readUsdcBalance(address)` via retry; `deriveTeamPoolAccount(index)` -> `mnemonicToAccount(env.POOL_WALLET_MNEMONIC, { addressIndex: index })`.
 9. **Gas verification (critical):** `scripts/verify-gas-in-usdc.ts`: derive account index 0, print its address. FIND Arc testnet USDC faucet (research: Arc docs / discord / faucet URL), fund the address with test USDC. Then send a small USDC `transfer` (e.g. 0.01 to index 1), await receipt via retry. Log: tx hash, `effectiveGasPrice`, `gasUsed`, and USDC balance before/after. Confirm the fee asset is USDC. If native (non-USDC) gas is required or tx reverts for missing native balance -> STOP, write `plans/PRD-ERRATA.md` (what PRD says vs reality + evidence), report to user.
    - `[RT-C1]` **MEASURE and RECORD the actual USDC gas cost of one `transfer`** (`effectiveGasPrice * gasUsed` converted to USDC base units). The 1 USDC (`GAS_BUFFER_BASE_UNITS = 1_000_000n`) buffer doubles as the gas budget for the WHOLE settlement loop, so validate: `measuredGasPerTransfer * maxExpectedMembers <= 1_000_000n`. Record the measured per-transfer cost and the headroom in `plans/PHASE1-AUDIT.md`. If a realistic member count would exceed the 1 USDC buffer -> flag in `plans/PRD-ERRATA.md` and report (buffer size is a settlement-safety parameter, not a free choice).
@@ -96,7 +96,7 @@ All RPC --> lib/wallet/rpc-retry.ts (backoff wrapper)
 13. `lib/points/compute-shares.ts`: input `{members:[{id, commits, prs}], commitWeight, prWeight, poolBaseUnits: bigint}`. points = commits*commitWeight + prs*prWeight. If totalPoints==0 -> return all zero amounts + `noActivity:true` + dust=poolBaseUnits. Else amount_i = floor(poolBaseUnits * points_i / totalPoints) in bigint; dust = poolBaseUnits - sum(amount_i). Return per-member `{points, pct, amountBaseUnits}` + `dustBaseUnits` + `noActivity:false`.
 14. `lib/points/compute-shares.test.ts`: vitest covering the test matrix. Run `npm test`, all green.
 15. `lib/supabase/client.ts` (anon, `NEXT_PUBLIC_*`) + `lib/supabase/admin.ts` (`SUPABASE_SERVICE_ROLE_KEY`, guard against client import).
-16. Run `npm run build` — zero type/compile errors. Commit with explicit paths.
+16. Run `npm run build`, zero type/compile errors. Commit with explicit paths.
 
 ### Env deltas (`.env.example`)
 ```
@@ -134,10 +134,10 @@ SUPABASE_SERVICE_ROLE_KEY=
 - Observable: `npm test` passes; `npm run build` clean; verification script prints a real Arc tx hash with USDC-denominated gas; `fetchCommits`/`fetchMergedPrs` return correct counts for a manually verified public repo/window; `computeShares` output sums (amounts + dust) exactly equals pool base units.
 - Gas-in-USDC assumption resolved (confirmed or ERRATA filed).
 
-## Test Matrix (vitest — `compute-shares.test.ts`)
+## Test Matrix (vitest: `compute-shares.test.ts`)
 - Unit: normal 3-member split (PRD example: 70/42/28 pts, 1000 USDC -> 500/300/200) exact.
 - Unit: zero total points -> `noActivity:true`, all amounts 0, dust == pool, no throw.
-- Unit: rounding dust — amounts + dust == poolBaseUnits (indivisible pool, e.g. 3 members 1 pt each of 1_000_000 -> 333333*3 + dust 1).
+- Unit: rounding dust, amounts + dust == poolBaseUnits (indivisible pool, e.g. 3 members 1 pt each of 1_000_000 -> 333333*3 + dust 1).
 - Unit: single member gets 100%.
 - Unit: member with 0 points among active members gets 0.
 - `[RT-C1]` Unit: **fully funded pool with buffer produces `paid`, not `insufficient_funds`.** Given `balance` and `GAS_BUFFER_BASE_UNITS`, `distributable = balance - buffer`; `computeShares(..., distributable)` -> `sum(amounts)+dust == distributable` AND `sum(amounts) <= balance - buffer`. Assert the settlement balance gate (`balance - buffer >= sum(amounts)`) passes (i.e. would NOT flip to insufficient_funds) for a pool that covers shares once the buffer is reserved. (Regression for the buffer double-count bug.)
@@ -162,13 +162,13 @@ SUPABASE_SERVICE_ROLE_KEY=
 
 ## MANUAL TEST GUIDE
 1. Terminal: run `npm run dev`. Open `http://localhost:3000`. Expect: placeholder page renders "MeritStream". Failure symptom: build error overlay / 500.
-2. Terminal: run `npm test`. Expect: all `compute-shares` tests pass (green summary). Failure: a red failing assertion — read which edge case.
+2. Terminal: run `npm test`. Expect: all `compute-shares` tests pass (green summary). Failure: a red failing assertion, read which edge case.
 3. Terminal: run the fetch check (a small `tsx scripts/...` or a temporary test) for a known repo/window. Expect commit + merged-PR counts matching what you see on GitHub for that author/window. Failure: 0 counts (check author email linkage or window) or 403 (add `GITHUB_TOKEN`).
 4. Terminal: run `npx tsx scripts/verify-gas-in-usdc.ts`. Expect: prints funded address, a tx hash, and USDC balance decreasing by (transfer + gas), confirming gas paid in USDC. Failure symptom: "insufficient funds for gas" mentioning a non-USDC token, or revert -> STOP and file `plans/PRD-ERRATA.md`.
 5. Supabase dashboard -> Table editor. Expect: `teams` (with `wallet_index`, `admin_token_hash`), `members` (with `created_at` `[RT-H3]`), `settlements` (status default, `UNIQUE(team_id, cycle_end)` `[RT-C3]`), `payouts` (status default 'pending', `tx_hash` NULLABLE `[RT-C2]`, `UNIQUE(settlement_id, member_id)` `[RT-C3]`) all present. Verify both unique constraints exist (Database -> Indexes or `\d`). Failure: missing table/column/constraint -> re-run `db/schema.sql`.
 
 ## AUDIT GATE
-Before requesting approval for Phase 2: run AUDIT GATE (CLAUDE.md). Write `plans/PHASE1-AUDIT.md` with: PRD deviations (list the three deliberate schema deviations — `payouts.tx_hash` NULLABLE `[RT-C2]`, `members.created_at` added `[RT-H3]`, `payouts.status`/`settlements.status` new values — cross-referenced in `plans/PRD-ERRATA.md`), 5 edge cases tested (empty repo, unlinked email commits, PR merged just outside window, RPC rate-limit retry, faucet/underfunded address), bugs+fixes, regression tests added, the real gas-verify tx hash as evidence, `[RT-C1]` the MEASURED per-transfer USDC gas cost + computed headroom vs the 1 USDC buffer for the max expected member count, `git log --oneline` + clean `git status`. Then STOP for user approval.
+Before requesting approval for Phase 2: run AUDIT GATE (CLAUDE.md). Write `plans/PHASE1-AUDIT.md` with: PRD deviations (list the three deliberate schema deviations, `payouts.tx_hash` NULLABLE `[RT-C2]`, `members.created_at` added `[RT-H3]`, `payouts.status`/`settlements.status` new values, cross-referenced in `plans/PRD-ERRATA.md`), 5 edge cases tested (empty repo, unlinked email commits, PR merged just outside window, RPC rate-limit retry, faucet/underfunded address), bugs+fixes, regression tests added, the real gas-verify tx hash as evidence, `[RT-C1]` the MEASURED per-transfer USDC gas cost + computed headroom vs the 1 USDC buffer for the max expected member count, `git log --oneline` + clean `git status`. Then STOP for user approval.
 
 ## Next Steps
 - Unblocks Phase 2 (create-team flow consumes fetchers + wallet derivation + schema).

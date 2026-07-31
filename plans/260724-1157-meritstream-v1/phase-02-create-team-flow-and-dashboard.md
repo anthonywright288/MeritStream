@@ -1,4 +1,4 @@
-# Phase 2 — Create-Team Flow + Team Dashboard (Live Signals)
+# Phase 2: Create-Team Flow + Team Dashboard (Live Signals)
 
 ## Context Links
 - PRD: `MeritStream-PRD-EN.md` sections 4.1, 4.2, 5 (setup), 6 (mid-cycle join, attribution), 6b schema.
@@ -18,23 +18,23 @@
 - `[RT-H3]` This mid-cycle rule MUST be wired into fetching: each member's effective `since = max(member.created_at, window.start)` is passed into BOTH `fetchCommits` AND `fetchMergedPrs`; PR inclusion filter uses `merged_at in [memberSince, window.end]`. A member added mid-window must show ZERO pre-join signals.
 - Signals endpoint hits GitHub N times (per member) + one balance RPC. Cache per request; 60s poll keeps volume sane. Use `GITHUB_TOKEN` to avoid 403.
 - `[RT-C5]` The signals endpoint is PUBLIC (no auth). Add a per-team short server cache (30-60s TTL) on the computed signals so public polling / hostile traffic cannot drain the shared `GITHUB_TOKEN` rate quota (a real DoS/quota-exhaustion attack vector). Cache key = teamId; TTL ~< poll interval.
-- `[RT-C1]` Dashboard projection uses the SAME distributable basis as settlement: `distributable = max(0n, poolBalance - GAS_BUFFER_BASE_UNITS)` is passed to `computeShares`, so the projected shares equal what settlement will actually pay (no drift from the buffer). `GAS_BUFFER_BASE_UNITS` (= `1_000_000n`) is a shared constant (`lib/settlement/constants.ts`, formally created in phase-03) — because the dashboard consumes it here, DEFINE it in a shared module usable from phase-02 (do not duplicate the literal).
+- `[RT-C1]` Dashboard projection uses the SAME distributable basis as settlement: `distributable = max(0n, poolBalance - GAS_BUFFER_BASE_UNITS)` is passed to `computeShares`, so the projected shares equal what settlement will actually pay (no drift from the buffer). `GAS_BUFFER_BASE_UNITS` (= `1_000_000n`) is a shared constant (`lib/settlement/constants.ts`, formally created in phase-03), because the dashboard consumes it here, DEFINE it in a shared module usable from phase-02 (do not duplicate the literal).
 
 ## Requirements
 ### Functional
-- FR1: `/create` form — name, repo (`owner/name`), members (username + wallet, add/remove rows), commit_weight, pr_weight, cycle (weekly|monthly).
-- FR2: Client validation — repo format, wallet checksum (viem `isAddress`), >=1 member, unique usernames. `[RT-M1]` `commit_weight` and `pr_weight` must be **positive integers** (reject fractional, zero-both, negative) — enforced client AND server-side (server is authoritative).
-- FR3: `POST /api/teams` — server validates repo EXISTS (GitHub `/repos/{repo}` 200) and each username exists; `[RT-M1]` re-validates weights are positive integers (422 if not); allocates `wallet_index`; derives pool address; generates admin token; stores team + members + `admin_token_hash`; returns `{teamId, poolAddress, adminToken}` (token once).
-  - `[RT-M2]` **Atomic create:** wallet_index allocation is a retry-loop on UNIQUE violation. If the members insert fails AFTER the team row is inserted, DELETE the team row (compensating rollback) and return an error — never leave an orphan team. The admin token is returned to the client ONLY after ALL writes (team + members) commit successfully.
+- FR1: `/create` form, name, repo (`owner/name`), members (username + wallet, add/remove rows), commit_weight, pr_weight, cycle (weekly|monthly).
+- FR2: Client validation, repo format, wallet checksum (viem `isAddress`), >=1 member, unique usernames. `[RT-M1]` `commit_weight` and `pr_weight` must be **positive integers** (reject fractional, zero-both, negative), enforced client AND server-side (server is authoritative).
+- FR3: `POST /api/teams`, server validates repo EXISTS (GitHub `/repos/{repo}` 200) and each username exists; `[RT-M1]` re-validates weights are positive integers (422 if not); allocates `wallet_index`; derives pool address; generates admin token; stores team + members + `admin_token_hash`; returns `{teamId, poolAddress, adminToken}` (token once).
+  - `[RT-M2]` **Atomic create:** wallet_index allocation is a retry-loop on UNIQUE violation. If the members insert fails AFTER the team row is inserted, DELETE the team row (compensating rollback) and return an error, never leave an orphan team. The admin token is returned to the client ONLY after ALL writes (team + members) commit successfully.
 - FR4: Create success screen shows pool address + QR + admin token with copy + "save this now" warning + link to dashboard.
-- FR5: `/team/[id]` dashboard — per-member points, projected pct + USDC share, pool balance, days-until-settlement; polls signals every 60s; manual Refresh button.
-- FR6: `GET /api/teams/[id]/signals` — returns per-member `{username, wallet, commits, prs, points, pct, projectedAmount}`, `poolBalance`, `[RT-C1]` `distributable` (= balance − buffer, the basis for `projectedAmount`), cycle window, dust. `[RT-C5]` served from a per-team 30-60s cache.
-- FR7: Per-member signals drawer — lists counted commits (sha + link) and merged PRs (number + link).
-- FR8: Edit team (weights/members) via `PATCH /api/teams/[id]` guarded by admin token header. Supports editing `commit_weight`/`pr_weight` (`[RT-M1]` re-validated positive integers), adding members, and `[RT-H4]` **editing a member's `wallet_address`** (re-validated with viem `isAddress`; 422 on invalid). Wallet editing is REQUIRED, not optional — phase-03 MANUAL TEST 8 (bad-then-fixed wallet resume) depends on it. `[RT-H4]` A member's `wallet_address` PATCH is BLOCKED (409) while a settlement for the current window is status `running` (prevents changing the destination mid-payout).
+- FR5: `/team/[id]` dashboard, per-member points, projected pct + USDC share, pool balance, days-until-settlement; polls signals every 60s; manual Refresh button.
+- FR6: `GET /api/teams/[id]/signals`, returns per-member `{username, wallet, commits, prs, points, pct, projectedAmount}`, `poolBalance`, `[RT-C1]` `distributable` (= balance − buffer, the basis for `projectedAmount`), cycle window, dust. `[RT-C5]` served from a per-team 30-60s cache.
+- FR7: Per-member signals drawer, lists counted commits (sha + link) and merged PRs (number + link).
+- FR8: Edit team (weights/members) via `PATCH /api/teams/[id]` guarded by admin token header. Supports editing `commit_weight`/`pr_weight` (`[RT-M1]` re-validated positive integers), adding members, and `[RT-H4]` **editing a member's `wallet_address`** (re-validated with viem `isAddress`; 422 on invalid). Wallet editing is REQUIRED, not optional, phase-03 MANUAL TEST 8 (bad-then-fixed wallet resume) depends on it. `[RT-H4]` A member's `wallet_address` PATCH is BLOCKED (409) while a settlement for the current window is status `running` (prevents changing the destination mid-payout).
 
 ### Non-functional
 - Files <200 LOC, kebab-case. Components split (form, member-row, dashboard, member-card, signals-drawer).
-- `[RT-C5]` `load-signals` takes a `strict` mode param. `strict=false` (TOLERANT, used by the public dashboard endpoint): GitHub error for a member -> mark `error:true`, count 0, warning; partial render, never 500. `strict=true` (used ONLY by settlement freeze in phase-03): ANY member fetch error THROWS so the caller aborts — a tolerant snapshot that silently zeroes a failed member would corrupt money. Dashboard is tolerant; freeze is strict.
+- `[RT-C5]` `load-signals` takes a `strict` mode param. `strict=false` (TOLERANT, used by the public dashboard endpoint): GitHub error for a member -> mark `error:true`, count 0, warning; partial render, never 500. `strict=true` (used ONLY by settlement freeze in phase-03): ANY member fetch error THROWS so the caller aborts, a tolerant snapshot that silently zeroes a failed member would corrupt money. Dashboard is tolerant; freeze is strict.
 - `[RT-C5]` Signals endpoint applies a per-team 30-60s server cache (quota-drain defense) around the tolerant computation.
 - Admin token compared by hashing input and constant-time compare against stored hash.
 
@@ -78,9 +78,9 @@
 ## Implementation Steps
 1. Add shadcn components: `npx shadcn@latest add button input card sheet badge label`.
 2. `lib/auth/admin-token.ts`: `generateToken` = `crypto.randomBytes(32).toString('hex')`; `hashToken` = sha256 hex; `verifyToken` = `timingSafeEqual` on hashes.
-3. `lib/cycle/window.ts`: `cycleWindow(team, now)` from `created_at`/last settlement; length by `cycle`. `[RT-H3]` `memberSince(member, windowStart)` = `max(member.created_at, windowStart)` — this value MUST flow into both fetchers in step 8, not just be computed and discarded.
+3. `lib/cycle/window.ts`: `cycleWindow(team, now)` from `created_at`/last settlement; length by `cycle`. `[RT-H3]` `memberSince(member, windowStart)` = `max(member.created_at, windowStart)`, this value MUST flow into both fetchers in step 8, not just be computed and discarded.
 4. `lib/github/validate-repo.ts`: `repoExists(repo)` (GET `/repos/{repo}` == 200), `userExists(login)` (GET `/users/{login}`).
-5. `lib/teams/create-team.ts`: validate inputs (`[RT-M1]` weights positive integers -> else 422); check repo + each user; `[RT-M2]` allocation RETRY-LOOP: `SELECT max(wallet_index)` -> next index -> `deriveTeamPoolAccount(index).address` -> insert team (id = short slug/nanoid); on UNIQUE(wallet_index) violation re-read max and retry (bounded, then 503). gen token + hash. THEN insert members; `[RT-M2]` if members insert fails, DELETE the just-inserted team row (compensating rollback) and return an error — no orphan team. Return `{teamId, poolAddress, adminToken}` ONLY after team + members both committed (token surfaced last).
+5. `lib/teams/create-team.ts`: validate inputs (`[RT-M1]` weights positive integers -> else 422); check repo + each user; `[RT-M2]` allocation RETRY-LOOP: `SELECT max(wallet_index)` -> next index -> `deriveTeamPoolAccount(index).address` -> insert team (id = short slug/nanoid); on UNIQUE(wallet_index) violation re-read max and retry (bounded, then 503). gen token + hash. THEN insert members; `[RT-M2]` if members insert fails, DELETE the just-inserted team row (compensating rollback) and return an error, no orphan team. Return `{teamId, poolAddress, adminToken}` ONLY after team + members both committed (token surfaced last).
 6. `app/api/teams/route.ts` POST -> `create-team.ts`. Validate body; 400 on bad input, 422 if repo/user missing. Never log token.
 7. `components/create/team-form.tsx`: controlled form, member rows add/remove, client validation (isAddress, repo regex, unique usernames), submit -> POST -> render `create-success.tsx` with pool address, QR, adminToken (copy button + warning), link to `/team/[id]`.
 8. `lib/teams/load-signals.ts`: `loadSignals(teamId, { strict })`. Load team+members; compute window; for each member compute `[RT-H3]` `since = memberSince(member, window.start)` and pass it into BOTH `fetchCommits(repo, username, since, window.end)` AND `fetchMergedPrs(repo, username, since, window.end)` (PR filter: `merged_at in [since, window.end]`). `[RT-C5]` error handling depends on mode: `strict=false` -> per-member try/catch (on error mark `error:true`, count 0, warning); `strict=true` -> re-throw (abort). `readUsdcBalance(poolAddress)` -> base units; `[RT-C1]` `distributable = max(0n, balance - GAS_BUFFER_BASE_UNITS)`; `computeShares(members, weights, distributable)`; return DTO (include both `poolBalance` and `distributable`) with items for drawer.
@@ -140,9 +140,9 @@
 
 ## Security Considerations
 - Admin token: only SHA-256 hash stored; returned once; mutations require header + constant-time verify. Never log token or hash.
-- Signals/GET endpoints are public read (matches PRD transparency) — expose no secrets, no admin token, no service-role data beyond public signals.
+- Signals/GET endpoints are public read (matches PRD transparency), expose no secrets, no admin token, no service-role data beyond public signals.
 - Server-only Supabase writes via service role in route handlers, never from client.
-- Untrusted input: repo/username strings go only to GitHub URL paths (encodeURIComponent) — no shell, no SQL string concat (use Supabase client params).
+- Untrusted input: repo/username strings go only to GitHub URL paths (encodeURIComponent), no shell, no SQL string concat (use Supabase client params).
 
 ## MANUAL TEST GUIDE
 1. Go to `http://localhost:3000/create`. Fill team name, a real public repo `owner/name`, 2-3 members with real GitHub usernames + valid wallet addresses, weights 1/3, cycle weekly. Click "Create team". Expect: success screen with pool address, QR code, and an admin token + "save now" warning. Failure: red validation on a field, or 422 (repo/user not found).

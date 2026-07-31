@@ -1,4 +1,4 @@
-# Design System — trích từ folder design `lineapromt`
+# Design System: trích từ folder design `lineapromt`
 
 Nguồn: `C:\Users\pc\Desktop\Clone Web\lineapromt\src\app\globals.css` (design tokens trích verbatim từ lineaprompt.com) + component TSX. **Mọi giá trị đọc thẳng từ CSS variables trong code, không phải ước lượng từ ảnh.** Light-mode only, không có dark mode.
 
@@ -19,7 +19,7 @@ Nguồn: `C:\Users\pc\Desktop\Clone Web\lineapromt\src\app\globals.css` (design 
 | Surface hover | `--surface-hover` | `#ffffffe6` |
 | Nền tối (panel "command") | `.magnetic-command` | `#0f1622e6` (ink đậm, dùng điểm nhấn) |
 
-Lưu ý: surface đều là **trắng bán trong suốt + `backdrop-filter: blur(28px) saturate(1.25)`** — hiệu ứng glassmorphism đặt trên nền gradient.
+Lưu ý: surface đều là **trắng bán trong suốt + `backdrop-filter: blur(28px) saturate(1.25)`**, hiệu ứng glassmorphism đặt trên nền gradient.
 
 Nền body = layered gradient: các `radial-gradient` trắng/teal/indigo rất nhạt trên `#edf3f8`, cộng thêm **lưới grid 56×56px** (`#1520300b`, fade dần xuống) và **noise SVG opacity 0.2** phủ toàn trang.
 
@@ -65,8 +65,8 @@ Ink scale: `--ink-950 #0d1420`, `--ink-800 #1d2a3b`, `--ink-650 #435066`, `--ink
 ## 2. Typography
 
 ### Font family
-- **Body/Display**: system native — `-apple-system, BlinkMacSystemFont, "SF Pro Text"/"SF Pro Display", "Helvetica Neue", Arial, sans-serif`
-- **Mono (code, kbd, label, tag)**: **IBM Plex Mono** (weights 400/500/600/700, next/font) — dùng RẤT nhiều: eyebrow labels, tags, metadata, keyboard hints, giá trị kỹ thuật
+- **Body/Display**: system native, `-apple-system, BlinkMacSystemFont, "SF Pro Text"/"SF Pro Display", "Helvetica Neue", Arial, sans-serif`
+- **Mono (code, kbd, label, tag)**: **IBM Plex Mono** (weights 400/500/600/700, next/font), dùng RẤT nhiều: eyebrow labels, tags, metadata, keyboard hints, giá trị kỹ thuật
 
 ### Scale (Tailwind classes thực dùng)
 | Vai trò | Size | Weight | Ghi chú |
@@ -123,7 +123,7 @@ Ink scale: `--ink-950 #0d1420`, `--ink-800 #1d2a3b`, `--ink-650 #435066`, `--ink
 | Hover card | `0 22–28px 58–78px -46px #2532489e` |
 | Visual lớn | `0 42px 120px -72px #253248b3, inset 0 1px #ffffffeb` |
 
-**Pattern nhất quán:** mọi shadow đều kèm `inset 0 1px 0 rgba(255,255,255,~.85)` — highlight viền trên tạo cảm giác kính/3D.
+**Pattern nhất quán:** mọi shadow đều kèm `inset 0 1px 0 rgba(255,255,255,~.85)`, highlight viền trên tạo cảm giác kính/3D.
 
 ### Motion tokens
 - Duration: `--dur-tap .12s`, `--dur-fast .18s`, `--dur-gentle .24s`, `--dur-soft .32s`
@@ -136,29 +136,29 @@ Ink scale: `--ink-950 #0d1420`, `--ink-800 #1d2a3b`, `--ink-650 #435066`, `--ink
 ### Button
 - **Primary (CTA)**: nền `#32389f` (indigo-650), chữ trắng, radius 8px, `text-sm font-semibold`, height 56px (hero) / 32px (default), shadow indigo đậm + inset highlight. **Hover**: `-translate-y-0.5` + nền sáng lên `#5157d8`. **Active**: về `translate-y-0` + shadow thu nhỏ (cảm giác nhấn phím)
 - **Secondary**: nền `--surface-1` (trắng 62% + backdrop-blur), border `--border-subtle`, chữ `--fg-primary`, cùng radius/hover pattern
-- **Focus**: `ring-2` màu `--focus-ring` + ring-offset — không dùng outline mặc định
+- **Focus**: `ring-2` màu `--focus-ring` + ring-offset, không dùng outline mặc định
 
 ### Input
 - Nền `--surface-strong` (`#ffffffd1`), border 1px `--border-subtle`, radius 8px, `min-height 44px`, padding `.72rem .8rem`
 - **Focus**: border → `--focus-ring`, nền → `--surface-hover`, glow `0 0 0 4px #5157d81f`
 - Placeholder: `--fg-tertiary`
 
-### Card / Panel ("frost-panel" — thành phần đặc trưng nhất)
+### Card / Panel ("frost-panel", thành phần đặc trưng nhất)
 - Border 1px `#ffffffe0` (viền trắng sáng), radius 14px, nền trắng bán trong `#ffffff9e`
 - `backdrop-filter: blur(28px) saturate(1.25)` + `--shadow-card`
-- **Hover** (card tương tác): `translateY(-1px đến -2px)`, nền → `--surface-hover`, border → tint indigo `#5157d833`, shadow đậm hơn — transition `.18s ease-frost`
+- **Hover** (card tương tác): `translateY(-1px đến -2px)`, nền → `--surface-hover`, border → tint indigo `#5157d833`, shadow đậm hơn, transition `.18s ease-frost`
 
 ### Row/list item active
-- Nền chuyển sang **gradient indigo đặc** `linear-gradient(90deg, #5b5ef7, #454bd8)`, chữ trắng, glow indigo — item được chọn nổi bật hẳn
+- Nền chuyển sang **gradient indigo đặc** `linear-gradient(90deg, #5b5ef7, #454bd8)`, chữ trắng, glow indigo, item được chọn nổi bật hẳn
 
 ### Pill/badge (eyebrow)
 - Mono/semibold, uppercase, `tracking-[0.12em]`, `text-[11px]`, nền `#5157d817`, border `#5157d838`, chữ `#30368f`, radius 8px
 
 ### Kbd (phím tắt)
-- Mono, `font-size .72em`, radius 6px, nền `currentColor` 8% + border `currentColor` 20% (color-mix) — tự thích ứng theo màu chữ xung quanh
+- Mono, `font-size .72em`, radius 6px, nền `currentColor` 8% + border `currentColor` 20% (color-mix), tự thích ứng theo màu chữ xung quanh
 
 ---
 
 ## 6. Vibe
 
-**"Frosted-glass tech-minimal"**: nền frost xanh-xám lạnh nhiều lớp gradient + grid + noise, mọi bề mặt là kính trắng mờ với viền sáng và bóng floating sâu; một accent indigo `#5157d8` (điểm xuyết teal), chữ hệ thống đậm nét + mono IBM Plex cho mọi metadata — nghiêm túc, tinh xảo, đậm chất dev-tool cao cấp kiểu macOS.
+**"Frosted-glass tech-minimal"**: nền frost xanh-xám lạnh nhiều lớp gradient + grid + noise, mọi bề mặt là kính trắng mờ với viền sáng và bóng floating sâu; một accent indigo `#5157d8` (điểm xuyết teal), chữ hệ thống đậm nét + mono IBM Plex cho mọi metadata: nghiêm túc, tinh xảo, đậm chất dev-tool cao cấp kiểu macOS.

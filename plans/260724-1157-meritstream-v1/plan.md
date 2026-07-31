@@ -1,5 +1,5 @@
 ---
-title: "MeritStream v1 — GitHub signals to USDC payout agent on Arc"
+title: "MeritStream v1, GitHub signals to USDC payout agent on Arc"
 description: "4-day hackathon build: create team, live signals, cron/manual settlement, per-member USDC payouts with audit trail, deployed on Vercel."
 status: completed
 priority: P1
@@ -9,7 +9,7 @@ tags: [hackathon, arc-testnet, viem, nextjs, supabase, usdc, payout-agent]
 created: 2026-07-24
 ---
 
-# MeritStream v1 — Implementation Plan
+# MeritStream v1: Implementation Plan
 
 PRD (source of truth for scope): `MeritStream-PRD-EN.md` (root).
 Design (source of truth for architecture): `plans/reports/brainstorm-260724-1157-meritstream-v1-design.md`.
@@ -23,16 +23,16 @@ Payout agent: GitHub commits + merged PRs per member -> weighted points -> USDC 
 - Auth: admin token per team, shown once at create, SHA-256 hash in `teams.admin_token_hash`, required for mutations.
 - Settlement: one shared engine, called by Vercel Cron `POST /api/agent/run` (CRON_SECRET, all due teams) and manual `POST /api/teams/[id]/settle` (admin token). Per-payout status for resume-from-first-unpaid.
 - Module layout (kebab-case, <200 LOC/file): `lib/github/`, `lib/points/`, `lib/wallet/`, `lib/settlement/`, `lib/supabase/`.
-- **Vercel Hobby cron = max 1 run/DAY** (verified fact from prior project — do not re-discover). Daily `0 0 * * *` only; demo timing via manual "Settle now". First production deploy at START of Phase 3 (deploy-first, fail-fast on env/timeout/cron), NOT at Phase 4.
+- **Vercel Hobby cron = max 1 run/DAY** (verified fact from prior project, do not re-discover). Daily `0 0 * * *` only; demo timing via manual "Settle now". First production deploy at START of Phase 3 (deploy-first, fail-fast on env/timeout/cron), NOT at Phase 4.
 
 ## Phases
 
 | # | Phase | Status | Depends on |
 |---|-------|--------|-----------|
-| 1 | [Skeleton, HD signer + gas verify, GitHub fetchers, points](phase-01-skeleton-signer-github-fetchers-points.md) | **completed** (audit: `plans/PHASE1-AUDIT.md`) | — |
+| 1 | [Skeleton, HD signer + gas verify, GitHub fetchers, points](phase-01-skeleton-signer-github-fetchers-points.md) | **completed** (audit: `plans/PHASE1-AUDIT.md`) | none |
 | 2 | [Create-team flow + dashboard (live signals)](phase-02-create-team-flow-and-dashboard.md) | **completed** (audit: `plans/PHASE2-AUDIT.md`) | Phase 1 |
 | 3 | [DEPLOY-FIRST + settlement engine + cron + history](phase-03-settlement-engine-cron-and-history.md) | **completed** (audit: `plans/PHASE3-AUDIT.md`; prod: meritstream-six.vercel.app) | Phase 1, 2 |
-| 4 | [Public page, polish, final redeploy, demo](phase-04-public-page-polish-deploy.md) | **completed** (audit: `plans/PHASE4-AUDIT.md`) — **v1 CLOSED** | Phase 1-3 |
+| 4 | [Public page, polish, final redeploy, demo](phase-04-public-page-polish-deploy.md) | **completed** (audit: `plans/PHASE4-AUDIT.md`), **v1 CLOSED** | Phase 1-3 |
 
 ## Key cross-phase dependencies
 - Phase 2 needs Phase 1 lib (`lib/github/*`, `lib/points/compute-shares.ts`, `lib/wallet/derive-pool-account.ts`, `lib/supabase/*`) and DB schema applied.
@@ -49,7 +49,7 @@ Each phase ends with AUDIT GATE -> write `plans/PHASE{N}-AUDIT.md` with real run
 
 ## Red Team Review
 
-### Session — 2026-07-24
+### Session: 2026-07-24
 **Findings:** 12 deduped from 28 raw (3 hostile reviewers) (12 accepted, 0 rejected)
 **Severity breakdown:** 5 Critical, 5 High, 2 Medium
 

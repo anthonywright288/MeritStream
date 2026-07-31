@@ -6,7 +6,7 @@ A payout agent that turns contribution into compensation. Connect a public
 GitHub repo, register members with their wallets, fund a pool in USDC. Each
 cycle the agent counts real work (commits + merged PRs per member), computes
 weighted shares with a deterministic formula (zero LLM), and pays every member
-in USDC on Arc Testnet — every payout links back to the exact commits that
+in USDC on Arc Testnet. Every payout links back to the exact commits that
 earned it.
 
 **Live:** https://meritstream-six.vercel.app
@@ -21,8 +21,8 @@ earned it.
 - Settlement: Vercel Cron (daily) or the admin "Settle now" button. The engine
   freezes an immutable signal snapshot, then pays sequentially with per-payout
   resume safety (a crash can never double-pay).
-- Gas on Arc is USDC itself (~0.0018 USDC per transfer, measured) — one asset
-  for pool, payouts, and fees.
+- Gas on Arc is USDC itself (~0.0018 USDC per transfer, measured), so one asset
+  covers pool, payouts, and fees.
 
 ## Pages
 
@@ -31,7 +31,7 @@ earned it.
 | `/create` | Create a team (repo, members, weights, cycle). Shows the pool address + one-time admin token |
 | `/team/[id]` | Live dashboard: points, projected shares, pool balance, Settle now |
 | `/team/[id]/history` | Audit trail: frozen snapshots, per-member tx hashes on Arc explorer |
-| `/t/[teamId]` | Public read-only transparency view — share it with contributors |
+| `/t/[teamId]` | Public read-only transparency view, share it with contributors |
 
 ## Setup
 
@@ -42,11 +42,11 @@ npm run dev
 ```
 
 Env (`.env.local`): Arc RPC/chain/USDC constants (defaults work),
-`POOL_WALLET_MNEMONIC` (HD wallet — one mnemonic derives every team's pool),
+`POOL_WALLET_MNEMONIC` (HD wallet, one mnemonic derives every team's pool),
 `GITHUB_TOKEN` (rate limit 60→5000/h), `CRON_SECRET`, Supabase URL + keys.
 Apply `db/schema.sql` then `db/migrations/*.sql` in the Supabase SQL editor.
 
-Tests: `npm test` (40 vitest — money math, resume safety, window rules).
+Tests: `npm test` (40 vitest: money math, resume safety, window rules).
 
 ## Deploying
 
@@ -59,13 +59,13 @@ npx vercel deploy --prod --yes
 ```
 
 Env vars live in Vercel project settings (beware: values must be BOM-free and
-newline-free — see `plans/PHASE3-AUDIT.md` for the incident). Cron is
-registered from `vercel.json` (daily — Vercel Hobby maximum; on-stage timing
+newline-free, see `plans/PHASE3-AUDIT.md` for the incident). Cron is
+registered from `vercel.json` (daily, the Vercel Hobby maximum; on-stage timing
 uses Settle now).
 
 ## Demo
 
-Follow `docs/demo-runbook.md` — a 3-minute script including the failure path
+Follow `docs/demo-runbook.md`, a 3-minute script including the failure path
 (double-settle → 409) and required wallet balances.
 
 ## Design notes
