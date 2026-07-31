@@ -43,7 +43,7 @@ export function FeatureGrid() {
       {/* Ambient aurora behind the grid */}
       <div
         aria-hidden
-        className="aurora-drift pointer-events-none absolute top-24 -right-40 -z-10 size-[460px] rounded-full bg-[radial-gradient(circle,#5157d81f,transparent_70%)]"
+        className="aurora-drift pointer-events-none absolute top-24 -right-40 -z-10 size-[560px] rounded-full bg-[radial-gradient(circle,#5157d842,transparent_70%)]"
       />
       <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
         Built in
@@ -52,10 +52,11 @@ export function FeatureGrid() {
         Everything a payout needs. Nothing it doesn&apos;t.
       </h2>
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {FEATURES.map((f) => (
+        {FEATURES.map((f, i) => (
           <div
             key={f.tag}
-            className="reveal rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[translate,background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-hover)"
+            style={{ animationDelay: `${i * 0.75}s` }}
+            className="float-y rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:bg-(--surface-hover)"
           >
             <span className="font-mono text-[10px] font-bold tracking-[0.14em] text-(--fg-accent) uppercase">
               {f.tag}

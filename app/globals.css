@@ -276,7 +276,7 @@
     width: 34%;
     pointer-events: none;
     background: linear-gradient(90deg, transparent, #ffffff70, transparent);
-    animation: sheen-sweep 6.5s ease-in-out infinite;
+    animation: sheen-sweep 4.6s ease-in-out infinite;
   }
 
   /* Scroll-linked reveal: progressive enhancement, browsers without view

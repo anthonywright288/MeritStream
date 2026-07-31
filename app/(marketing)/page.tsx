@@ -7,13 +7,17 @@ import { FormulaSection } from "@/components/marketing/formula-section";
 import { LifecycleSection } from "@/components/marketing/lifecycle-section";
 import { SettlementConsoleMock } from "@/components/marketing/settlement-console-mock";
 import { StatsBand } from "@/components/marketing/stats-band";
+import { TickerStrip } from "@/components/marketing/ticker-strip";
 
 const DEMO_TEAM_ID = "75pw8g1f";
 
-/** One step card in the "how it works" rail. */
-function StepCard({ n, title, body }: { n: string; title: string; body: string }) {
+/** One step card in the "how it works" rail. Staggered idle float. */
+function StepCard({ n, title, body, delay }: { n: string; title: string; body: string; delay: string }) {
   return (
-    <div className="reveal rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[translate,background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-hover)">
+    <div
+      style={{ animationDelay: delay }}
+      className="float-y rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:bg-(--surface-hover)"
+    >
       <span className="inline-grid size-7 place-items-center rounded-full border border-(--pill-border) bg-(--pill-bg) font-mono text-[11px] font-bold text-(--fg-accent)">
         {n}
       </span>
@@ -31,8 +35,8 @@ export default function Home() {
         {/* Ambient aurora orbs — pre-blurred radial gradients drifting on the
             compositor (no filter: blur), purely decorative depth */}
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <div className="aurora-drift absolute -top-16 right-[6%] size-[440px] rounded-full bg-[radial-gradient(circle,#5157d824,transparent_70%)]" />
-          <div className="aurora-drift absolute top-[42%] -left-40 size-[500px] rounded-full bg-[radial-gradient(circle,#0f9f9a1f,transparent_70%)] [animation-delay:-7s]" />
+          <div className="aurora-drift absolute -top-16 right-[6%] size-[440px] rounded-full bg-[radial-gradient(circle,#5157d842,transparent_70%)]" />
+          <div className="aurora-drift absolute top-[42%] -left-40 size-[500px] rounded-full bg-[radial-gradient(circle,#0f9f9a38,transparent_70%)] [animation-delay:-7s]" />
         </div>
         <div>
           <div className="rise-in inline-flex items-center gap-2.5 rounded-[10px] border border-(--border-subtle) bg-(--surface-1) px-3 py-2 text-sm font-medium text-(--fg-secondary) shadow-card">
@@ -82,33 +86,8 @@ export default function Home() {
         <div className="rise-in hidden justify-center [animation-delay:200ms] sm:flex">
           <SettlementConsoleMock />
         </div>
-        {/* Settlement-pipeline ticker: a slow mono marquee along the hero's
-            bottom edge — every phrase is a real engine fact */}
-        <div
-          aria-hidden
-          className="relative overflow-hidden border-y border-(--border-subtle) py-3.5 [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)] md:col-span-2"
-        >
-          <div className="ticker-track flex w-max gap-9">
-            {[0, 1].map((copy) => (
-              <div key={copy} className="flex shrink-0 items-center gap-9 font-mono text-xs whitespace-nowrap text-(--fg-tertiary)">
-                {[
-                  "points = commits × w₁ + merged PRs × w₂",
-                  "share = points / total_points",
-                  "payout = share × (pool − gas buffer)",
-                  "one transfer per member",
-                  "dust stays in the pool",
-                  "zero LLM in the money path",
-                  "receipts down to the commit",
-                  "auditable by anyone",
-                ].map((t) => (
-                  <span key={t} className="inline-flex items-center gap-9">
-                    {t} <span className="text-(--fg-accent)">·</span>
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Settlement-pipeline ticker along the hero's bottom edge */}
+        <TickerStrip className="md:col-span-2" />
       </section>
 
       {/* ========================= Stats band ========================= */}
@@ -127,16 +106,19 @@ export default function Home() {
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           <StepCard
             n="01"
+            delay="0s"
             title="Signals in"
             body="Public GitHub activity only: commits and merged PRs in the cycle window. Pulled straight from the repo — nothing self-reported."
           />
           <StepCard
             n="02"
+            delay="0.9s"
             title="Weighted split"
             body="points = commits × w₁ + merged PRs × w₂. A formula the whole team agreed on up front. Zero LLM, zero discretion."
           />
           <StepCard
             n="03"
+            delay="1.8s"
             title="One settlement run"
             body="Cron freezes a snapshot, then pays every member their share in USDC on Arc — one transfer each, dust stays in the pool."
           />
@@ -180,6 +162,11 @@ export default function Home() {
       {/* ========================= FAQ + final CTA ========================= */}
       <FaqSection />
       <FinalCtaSection demoTeamId={DEMO_TEAM_ID} />
+
+      {/* Closing ticker, mirrored direction */}
+      <div className="pb-14">
+        <TickerStrip reverse />
+      </div>
 
       {/* ============================= Footer ============================= */}
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-(--border-subtle) py-8 text-xs text-(--fg-tertiary)">

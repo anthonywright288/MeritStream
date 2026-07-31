@@ -38,7 +38,7 @@ export function LifecycleSection() {
       {/* Ambient aurora behind the rail */}
       <div
         aria-hidden
-        className="aurora-drift pointer-events-none absolute top-40 -left-44 -z-10 size-[480px] rounded-full bg-[radial-gradient(circle,#0f9f9a1c,transparent_70%)] [animation-delay:-5s]"
+        className="aurora-drift pointer-events-none absolute top-40 -left-44 -z-10 size-[560px] rounded-full bg-[radial-gradient(circle,#0f9f9a38,transparent_70%)] [animation-delay:-5s]"
       />
       <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
         A cycle, end to end
@@ -54,7 +54,7 @@ export function LifecycleSection() {
             <span
               aria-hidden
               style={{ animationDelay: `${i * 0.55}s` }}
-              className={`pulse-glow absolute top-6 -left-6 grid size-3 -translate-x-1/2 place-items-center rounded-full border md:-left-8 ${
+              className={`pulse-glow absolute top-6 -left-6 grid size-3.5 -translate-x-1/2 place-items-center rounded-full border md:-left-8 ${
                 i === 3
                   ? "border-indigo-500 bg-indigo-500 shadow-[0_0_14px_var(--accent-glow)]"
                   : "border-(--border-magnetic) bg-indigo-500/35"

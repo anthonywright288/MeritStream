@@ -15,10 +15,11 @@ export function StatsBand() {
   return (
     <section aria-label="Product facts" className="pb-[104px]">
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {STATS.map((s) => (
+        {STATS.map((s, i) => (
           <div
             key={s.label}
-            className="reveal rounded-(--radius-panel) border border-(--border-glass) bg-(--surface-2) px-5 py-4 shadow-card"
+            style={{ animationDelay: `${i * 0.7}s` }}
+            className="float-y rounded-(--radius-panel) border border-(--border-glass) bg-(--surface-2) px-5 py-4 shadow-card"
           >
             <p className="font-heading text-4xl font-extrabold tracking-tight tabular-nums text-(--fg-accent)">
               {s.value}
