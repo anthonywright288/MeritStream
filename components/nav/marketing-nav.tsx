@@ -24,18 +24,21 @@ export function MarketingNav() {
           MeritStream
         </Link>
         <div className="hidden items-center gap-6 sm:flex">
-          <a
-            href="#how"
-            className="text-sm font-medium text-(--fg-secondary) transition-colors duration-(--dur-fast) hover:text-(--fg-primary)"
-          >
-            How it works
-          </a>
-          <a
-            href="#transparency"
-            className="text-sm font-medium text-(--fg-secondary) transition-colors duration-(--dur-fast) hover:text-(--fg-primary)"
-          >
-            Transparency
-          </a>
+          {[
+            ["#how", "How it works"],
+            ["#formula", "Formula"],
+            ["#features", "Features"],
+            ["#transparency", "Transparency"],
+            ["#faq", "FAQ"],
+          ].map(([href, label]) => (
+            <a
+              key={href}
+              href={href}
+              className="text-sm font-medium text-(--fg-secondary) transition-colors duration-(--dur-fast) hover:text-(--fg-primary)"
+            >
+              {label}
+            </a>
+          ))}
         </div>
         <Link
           href="/create"

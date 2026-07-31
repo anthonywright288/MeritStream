@@ -1,5 +1,12 @@
 import Link from "next/link";
+import { ComparisonSection } from "@/components/marketing/comparison-section";
+import { FaqSection } from "@/components/marketing/faq-section";
+import { FeatureGrid } from "@/components/marketing/feature-grid";
+import { FinalCtaSection } from "@/components/marketing/final-cta-section";
+import { FormulaSection } from "@/components/marketing/formula-section";
+import { LifecycleSection } from "@/components/marketing/lifecycle-section";
 import { SettlementConsoleMock } from "@/components/marketing/settlement-console-mock";
+import { StatsBand } from "@/components/marketing/stats-band";
 
 const DEMO_TEAM_ID = "75pw8g1f";
 
@@ -71,8 +78,13 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ========================= Stats band ========================= */}
+      <div className="pt-[104px]">
+        <StatsBand />
+      </div>
+
       {/* ========================= How it works ========================= */}
-      <section id="how" className="scroll-mt-28 py-[104px]">
+      <section id="how" className="scroll-mt-28 pb-[104px]">
         <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
           How it works
         </span>
@@ -97,6 +109,12 @@ export default function Home() {
           />
         </div>
       </section>
+
+      {/* ==================== Formula / Features / Why ==================== */}
+      <FormulaSection />
+      <FeatureGrid />
+      <ComparisonSection />
+      <LifecycleSection />
 
       {/* ========================= Transparency ========================= */}
       <section id="transparency" className="scroll-mt-28 pb-[104px]">
@@ -125,6 +143,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ========================= FAQ + final CTA ========================= */}
+      <FaqSection />
+      <FinalCtaSection demoTeamId={DEMO_TEAM_ID} />
 
       {/* ============================= Footer ============================= */}
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-(--border-subtle) py-8 text-xs text-(--fg-tertiary)">
