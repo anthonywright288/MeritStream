@@ -39,7 +39,12 @@ const FEATURES = [
 
 export function FeatureGrid() {
   return (
-    <section id="features" className="scroll-mt-28 pb-[104px]">
+    <section id="features" className="relative scroll-mt-28 pb-[104px]">
+      {/* Ambient aurora behind the grid */}
+      <div
+        aria-hidden
+        className="aurora-drift pointer-events-none absolute top-24 -right-40 -z-10 size-[460px] rounded-full bg-[radial-gradient(circle,#5157d81f,transparent_70%)]"
+      />
       <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
         Built in
       </span>

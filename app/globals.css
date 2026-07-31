@@ -251,11 +251,33 @@
     to { translate: -50% 0; }
   }
 
+  /* Terminal caret for the formula panel */
+  @keyframes caret-blink {
+    0%, 46% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  /* Glass glare sweeping across a panel every few seconds (holds off-screen
+     between passes via the 22% keyframe) */
+  @keyframes sheen-sweep {
+    0% { transform: translateX(-160%) skewX(-14deg); }
+    22%, 100% { transform: translateX(340%) skewX(-14deg); }
+  }
+
   .rise-in { animation: rise-in 0.7s var(--ease-frost) both; }
   .float-y { animation: float-y 7s ease-in-out infinite; }
   .pulse-glow { animation: pulse-glow 2.4s ease-in-out infinite; }
   .aurora-drift { animation: aurora-drift 14s ease-in-out infinite; }
   .ticker-track { animation: ticker-scroll 28s linear infinite; }
+  .caret-blink { animation: caret-blink 1.1s steps(1) infinite; }
+  .sheen {
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    width: 34%;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, #ffffff70, transparent);
+    animation: sheen-sweep 6.5s ease-in-out infinite;
+  }
 
   /* Scroll-linked reveal: progressive enhancement, browsers without view
      timelines (and reduced-motion users) simply see the content. */

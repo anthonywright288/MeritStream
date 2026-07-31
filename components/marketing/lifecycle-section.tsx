@@ -34,7 +34,12 @@ const STOPS = [
 
 export function LifecycleSection() {
   return (
-    <section id="lifecycle" className="scroll-mt-28 pb-[104px]">
+    <section id="lifecycle" className="relative scroll-mt-28 pb-[104px]">
+      {/* Ambient aurora behind the rail */}
+      <div
+        aria-hidden
+        className="aurora-drift pointer-events-none absolute top-40 -left-44 -z-10 size-[480px] rounded-full bg-[radial-gradient(circle,#0f9f9a1c,transparent_70%)] [animation-delay:-5s]"
+      />
       <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
         A cycle, end to end
       </span>
@@ -44,13 +49,15 @@ export function LifecycleSection() {
       <ol className="relative mt-10 space-y-4 border-l border-(--border-subtle) pl-6 md:pl-8">
         {STOPS.map((s, i) => (
           <li key={s.phase} className="relative">
-            {/* Rail dot — indigo for active-feel on the money step */}
+            {/* Rail dot — indigo for active-feel on the money step. Staggered
+                pulse delays make the signal appear to travel down the rail. */}
             <span
               aria-hidden
-              className={`absolute top-6 -left-6 grid size-3 -translate-x-1/2 place-items-center rounded-full border md:-left-8 ${
+              style={{ animationDelay: `${i * 0.55}s` }}
+              className={`pulse-glow absolute top-6 -left-6 grid size-3 -translate-x-1/2 place-items-center rounded-full border md:-left-8 ${
                 i === 3
                   ? "border-indigo-500 bg-indigo-500 shadow-[0_0_14px_var(--accent-glow)]"
-                  : "border-(--border-magnetic) bg-(--surface-strong)"
+                  : "border-(--border-magnetic) bg-indigo-500/35"
               }`}
             />
             <div className="reveal rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[translate,background-color] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-hover) md:p-6">
