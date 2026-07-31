@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <main className="mx-auto w-full max-w-[1180px] px-5">
       {/* ============================== Hero ============================== */}
-      <section className="relative grid min-h-[92vh] items-center gap-12 pt-32 md:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)] md:pt-24">
+      <section className="relative grid items-center gap-x-12 gap-y-14 pt-36 md:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)] md:pt-40">
         {/* Ambient aurora orbs — pre-blurred radial gradients drifting on the
             compositor (no filter: blur), purely decorative depth */}
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -72,7 +72,7 @@ export default function Home() {
             {["Zero LLM", "Deterministic formula", "Auditable by anyone"].map((chip) => (
               <div
                 key={chip}
-                className="rounded-[9px] border border-(--border-subtle) bg-(--surface-3) px-3 py-2 text-center font-mono text-xs text-(--fg-secondary)"
+                className="flex items-center justify-center rounded-[9px] border border-(--border-subtle) bg-(--surface-3) px-3 py-2 text-center font-mono text-xs text-(--fg-secondary)"
               >
                 {chip}
               </div>
@@ -86,7 +86,7 @@ export default function Home() {
             bottom edge — every phrase is a real engine fact */}
         <div
           aria-hidden
-          className="relative self-end overflow-hidden pb-8 [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)] md:col-span-2"
+          className="relative overflow-hidden border-y border-(--border-subtle) py-3.5 [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)] md:col-span-2"
         >
           <div className="ticker-track flex w-max gap-9">
             {[0, 1].map((copy) => (
