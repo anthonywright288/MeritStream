@@ -53,7 +53,7 @@ export function LifecycleSection() {
                   : "border-(--border-magnetic) bg-(--surface-strong)"
               }`}
             />
-            <div className="rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card backdrop-blur-xl transition-[translate,background-color] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-hover) md:p-6">
+            <div className="rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[translate,background-color] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-hover) md:p-6">
               <p className="font-mono text-[10px] font-bold tracking-[0.14em] text-(--fg-accent) uppercase">
                 {s.phase}
               </p>

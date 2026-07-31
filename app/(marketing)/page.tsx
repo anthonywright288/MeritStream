@@ -13,7 +13,7 @@ const DEMO_TEAM_ID = "75pw8g1f";
 /** One step card in the "how it works" rail. */
 function StepCard({ n, title, body }: { n: string; title: string; body: string }) {
   return (
-    <div className="rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card backdrop-blur-xl transition-[translate,background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-hover)">
+    <div className="rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[translate,background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-hover)">
       <span className="inline-grid size-7 place-items-center rounded-full border border-(--pill-border) bg-(--pill-bg) font-mono text-[11px] font-bold text-(--fg-accent)">
         {n}
       </span>
@@ -29,7 +29,7 @@ export default function Home() {
       {/* ============================== Hero ============================== */}
       <section className="grid min-h-[92vh] items-center gap-12 pt-32 md:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)] md:pt-24">
         <div>
-          <div className="inline-flex items-center gap-2.5 rounded-[10px] border border-(--border-subtle) bg-(--surface-1) px-3 py-2 text-sm font-medium text-(--fg-secondary) shadow-card backdrop-blur-xl">
+          <div className="inline-flex items-center gap-2.5 rounded-[10px] border border-(--border-subtle) bg-(--surface-1) px-3 py-2 text-sm font-medium text-(--fg-secondary) shadow-card">
             <span className="size-2 rounded-full bg-(--success) shadow-[0_0_14px_var(--success-glow)]" />
             Zero LLM · deterministic · on Arc
           </div>
@@ -50,7 +50,7 @@ export default function Home() {
             </Link>
             <Link
               href={`/team/${DEMO_TEAM_ID}`}
-              className="inline-flex h-13 items-center rounded-(--radius-control) border border-(--border-subtle) bg-card px-5 text-sm font-semibold text-(--fg-primary) shadow-card backdrop-blur-xl transition-[translate,background-color] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-strong) active:translate-y-0"
+              className="inline-flex h-13 items-center rounded-(--radius-control) border border-(--border-subtle) bg-card px-5 text-sm font-semibold text-(--fg-primary) shadow-card transition-[translate,background-color] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-strong) active:translate-y-0"
             >
               Live demo team
             </Link>
@@ -118,7 +118,7 @@ export default function Home() {
 
       {/* ========================= Transparency ========================= */}
       <section id="transparency" className="scroll-mt-28 pb-[104px]">
-        <div className="rounded-(--radius-panel) border border-(--border-glass) bg-card p-8 shadow-hud backdrop-blur-xl md:p-10">
+        <div className="rounded-(--radius-panel) border border-(--border-glass) bg-card p-8 shadow-hud md:p-10">
           <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_auto]">
             <div>
               <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">

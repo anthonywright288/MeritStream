@@ -39,7 +39,7 @@ export function FaqSection() {
         {FAQS.map((f) => (
           <details
             key={f.q}
-            className="group rounded-(--radius-panel) border border-(--border-subtle) bg-(--surface-2) backdrop-blur-xl transition-[border-color,background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) open:border-(--focus-ring-soft) open:bg-card open:shadow-card"
+            className="group rounded-(--radius-panel) border border-(--border-subtle) bg-(--surface-2) transition-[border-color,background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) open:border-(--focus-ring-soft) open:bg-card open:shadow-card"
           >
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold select-none [&::-webkit-details-marker]:hidden">
               {f.q}

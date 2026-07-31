@@ -14,7 +14,7 @@ export function FormulaSection() {
       </h2>
       <div className="mt-10 grid items-stretch gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
         {/* Dark command panel with the actual math */}
-        <div className="rounded-(--radius-panel) border border-white/15 bg-[linear-gradient(#ffffff1c,transparent_28%),radial-gradient(520px_280px_at_88%_20%,#1288802e,transparent_64%),#0f1622e6] p-6 text-[#fafdff]/95 shadow-[0_34px_90px_-34px_#0c1420b8,inset_0_1px_0_#ffffff24] backdrop-blur-2xl md:p-8">
+        <div className="rounded-(--radius-panel) border border-white/15 bg-[linear-gradient(#ffffff1c,transparent_28%),radial-gradient(520px_280px_at_88%_20%,#1288802e,transparent_64%),#0f1622e6] p-6 text-[#fafdff]/95 shadow-[0_34px_90px_-34px_#0c1420b8,inset_0_1px_0_#ffffff24] md:p-8">
           <p className="font-mono text-[11px] font-semibold tracking-[0.12em] text-white/50 uppercase">
             settlement.ts — deterministic core
           </p>
@@ -59,7 +59,7 @@ export function FormulaSection() {
           ].map((x) => (
             <div
               key={x.t}
-              className="rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card backdrop-blur-xl"
+              className="rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card"
             >
               <h3 className="font-heading text-base font-bold">{x.t}</h3>
               <p className="mt-1 text-sm leading-relaxed text-(--fg-secondary)">{x.b}</p>

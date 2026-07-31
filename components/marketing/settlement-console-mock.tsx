@@ -15,7 +15,7 @@ export function SettlementConsoleMock() {
   return (
     <div
       aria-hidden
-      className="relative w-full max-w-[560px] -rotate-2 rounded-(--radius-panel) border border-(--border-magnetic) bg-[linear-gradient(180deg,#ffffffdb,transparent_38%),radial-gradient(520px_260px_at_82%_16%,#0f9f9a2e,transparent_62%),radial-gradient(440px_280px_at_30%_0%,#5157d81a,transparent_64%)] p-4 shadow-hud backdrop-blur-2xl backdrop-saturate-150"
+      className="relative w-full max-w-[560px] -rotate-2 rounded-(--radius-panel) border border-(--border-magnetic) bg-[linear-gradient(180deg,#ffffffdb,transparent_38%),radial-gradient(520px_260px_at_82%_16%,#0f9f9a2e,transparent_62%),radial-gradient(440px_280px_at_30%_0%,#5157d81a,transparent_64%)] p-4 shadow-hud backdrop-saturate-150"
     >
       {/* Top bar: run status + cycle tag */}
       <div className="flex items-center justify-between gap-3 text-xs text-(--fg-tertiary)">

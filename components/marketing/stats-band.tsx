@@ -18,7 +18,7 @@ export function StatsBand() {
         {STATS.map((s) => (
           <div
             key={s.label}
-            className="rounded-(--radius-panel) border border-(--border-glass) bg-(--surface-2) px-5 py-4 shadow-card backdrop-blur-xl"
+            className="rounded-(--radius-panel) border border-(--border-glass) bg-(--surface-2) px-5 py-4 shadow-card"
           >
             <p className="font-heading text-4xl font-extrabold tracking-tight tabular-nums text-(--fg-accent)">
               {s.value}

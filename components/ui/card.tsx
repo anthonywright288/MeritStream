@@ -12,9 +12,11 @@ function Card({
       data-slot="card"
       data-size={size}
       className={cn(
-        // frost-panel (§5): white glass edge, 14px radius, translucent surface,
-        // backdrop blur + signature floating shadow with white inset top edge.
-        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-(--radius-panel) border border-(--border-glass) bg-card py-(--card-spacing) text-sm text-card-foreground shadow-card backdrop-blur-xl backdrop-saturate-125 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-(--radius-panel) *:[img:last-child]:rounded-b-(--radius-panel)",
+        // frost-panel (§5): white glass edge, 14px radius, translucent surface
+        // + signature floating shadow with white inset top edge. No backdrop
+        // blur here: cards sit on a static gradient, blur is invisible but
+        // costs a GPU re-composite per card per frame.
+        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-(--radius-panel) border border-(--border-glass) bg-card py-(--card-spacing) text-sm text-card-foreground shadow-card [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-(--radius-panel) *:[img:last-child]:rounded-b-(--radius-panel)",
         className
       )}
       {...props}
