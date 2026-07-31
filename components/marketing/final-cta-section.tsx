@@ -7,7 +7,7 @@ import Link from "next/link";
 export function FinalCtaSection({ demoTeamId }: { demoTeamId: string }) {
   return (
     <section className="pb-[104px]">
-      <div className="reveal relative overflow-hidden rounded-(--radius-panel) border border-(--border-glass) bg-card p-8 text-center shadow-hud md:p-14">
+      <div className="reveal-scale relative overflow-hidden rounded-(--radius-panel) border border-(--border-glass) bg-card p-8 text-center shadow-hud md:p-14">
         {/* Periodic glass glare sweeping across the panel */}
         <span aria-hidden className="sheen" />
         <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">

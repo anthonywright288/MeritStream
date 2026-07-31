@@ -279,13 +279,65 @@
     animation: sheen-sweep 4.6s ease-in-out infinite;
   }
 
-  /* Scroll-linked reveal: progressive enhancement, browsers without view
+  @keyframes slide-in-left {
+    from { opacity: 0; transform: translateX(-44px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slide-in-right {
+    from { opacity: 0; transform: translateX(44px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.94) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes grow-y {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+
+  /* Cards that both float continuously AND reveal on scroll need the float
+     here as a base so browsers without view timelines still get idle motion. */
+  .reveal-float { animation: float-y 7s ease-in-out infinite; }
+
+  /* Scroll-linked reveals: progressive enhancement, browsers without view
      timelines (and reduced-motion users) simply see the content. */
   @supports (animation-timeline: view()) {
     .reveal {
       animation: rise-in both;
       animation-timeline: view();
       animation-range: entry 0% entry 48%;
+    }
+    .reveal-left {
+      animation: slide-in-left both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 52%;
+    }
+    .reveal-right {
+      animation: slide-in-right both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 52%;
+    }
+    .reveal-scale {
+      animation: scale-in both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+    /* Scroll reveal (transform) + idle float (translate) in one element:
+       per-animation timelines — first is scroll-linked, second runs on time.
+       animation-delay staggers only the float (delay is ignored by
+       scroll-linked animations). */
+    .reveal-float {
+      animation: rise-in both, float-y 7s ease-in-out infinite;
+      animation-timeline: view(), auto;
+      animation-range: entry 0% entry 48%, normal;
+    }
+    /* Lifecycle rail draws itself as the list scrolls through the viewport */
+    .rail-grow {
+      transform-origin: top;
+      animation: grow-y both linear;
+      animation-timeline: view();
+      animation-range: cover 0% cover 78%;
     }
   }
 }

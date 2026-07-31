@@ -29,10 +29,10 @@ const FAQS = [
 export function FaqSection() {
   return (
     <section id="faq" className="scroll-mt-28 pb-[104px]">
-      <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
+      <span className="reveal inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
         FAQ
       </span>
-      <h2 className="font-heading mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance">
+      <h2 className="reveal font-heading mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance">
         The questions every team asks first.
       </h2>
       <div className="mt-10 grid gap-3">

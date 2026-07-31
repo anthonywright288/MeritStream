@@ -16,7 +16,7 @@ function StepCard({ n, title, body, delay }: { n: string; title: string; body: s
   return (
     <div
       style={{ animationDelay: delay }}
-      className="float-y rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:bg-(--surface-hover)"
+      className="reveal-float rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:bg-(--surface-hover)"
     >
       <span className="inline-grid size-7 place-items-center rounded-full border border-(--pill-border) bg-(--pill-bg) font-mono text-[11px] font-bold text-(--fg-accent)">
         {n}
@@ -97,10 +97,10 @@ export default function Home() {
 
       {/* ========================= How it works ========================= */}
       <section id="how" className="scroll-mt-28 pb-[104px]">
-        <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
+        <span className="reveal inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
           How it works
         </span>
-        <h2 className="font-heading mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance">
+        <h2 className="reveal font-heading mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance">
           Three moves. No judgment calls.
         </h2>
         <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -133,7 +133,7 @@ export default function Home() {
 
       {/* ========================= Transparency ========================= */}
       <section id="transparency" className="scroll-mt-28 pb-[104px]">
-        <div className="reveal rounded-(--radius-panel) border border-(--border-glass) bg-card p-8 shadow-hud md:p-10">
+        <div className="reveal-scale rounded-(--radius-panel) border border-(--border-glass) bg-card p-8 shadow-hud md:p-10">
           <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_auto]">
             <div>
               <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">

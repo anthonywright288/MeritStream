@@ -40,13 +40,18 @@ export function LifecycleSection() {
         aria-hidden
         className="aurora-drift pointer-events-none absolute top-40 -left-44 -z-10 size-[560px] rounded-full bg-[radial-gradient(circle,#0f9f9a38,transparent_70%)] [animation-delay:-5s]"
       />
-      <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
+      <span className="reveal inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
         A cycle, end to end
       </span>
-      <h2 className="font-heading mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance">
+      <h2 className="reveal font-heading mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance">
         From first commit to final receipt.
       </h2>
       <ol className="relative mt-10 space-y-4 border-l border-(--border-subtle) pl-6 md:pl-8">
+        {/* Indigo→teal line drawing itself down the rail as you scroll */}
+        <span
+          aria-hidden
+          className="rail-grow absolute inset-y-0 -left-px w-px bg-[linear-gradient(180deg,#5157d8b3,#0f9f9a80)]"
+        />
         {STOPS.map((s, i) => (
           <li key={s.phase} className="relative">
             {/* Rail dot — indigo for active-feel on the money step. Staggered

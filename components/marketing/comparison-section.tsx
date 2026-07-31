@@ -43,8 +43,10 @@ function Column({
 }) {
   return (
     <div
-      className={`reveal rounded-(--radius-panel) border bg-card p-6 shadow-card md:p-7 ${
-        accent ? "border-(--focus-ring-soft)" : "border-(--border-glass)"
+      className={`rounded-(--radius-panel) border bg-card p-6 shadow-card md:p-7 ${
+        accent
+          ? "reveal-right border-(--focus-ring-soft)"
+          : "reveal-left border-(--border-glass)"
       }`}
     >
       <p
@@ -71,13 +73,13 @@ function Column({
 export function ComparisonSection() {
   return (
     <section id="why" className="scroll-mt-28 pb-[104px]">
-      <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
+      <span className="reveal inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
         Why switch
       </span>
-      <h2 className="font-heading mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance">
+      <h2 className="reveal font-heading mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance">
         Splitting money by vibes is how teams break up.
       </h2>
-      <p className="mt-4 max-w-2xl leading-relaxed text-(--fg-secondary)">
+      <p className="reveal mt-4 max-w-2xl leading-relaxed text-(--fg-secondary)">
         Every side project dies the same way: the work was uneven, the split
         was even, and nobody wants to have the conversation. MeritStream
         replaces the conversation with a formula.

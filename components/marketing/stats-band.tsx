@@ -19,7 +19,7 @@ export function StatsBand() {
           <div
             key={s.label}
             style={{ animationDelay: `${i * 0.7}s` }}
-            className="float-y rounded-(--radius-panel) border border-(--border-glass) bg-(--surface-2) px-5 py-4 shadow-card"
+            className="reveal-float rounded-(--radius-panel) border border-(--border-glass) bg-(--surface-2) px-5 py-4 shadow-card"
           >
             <p className="font-heading text-4xl font-extrabold tracking-tight tabular-nums text-(--fg-accent)">
               {s.value}

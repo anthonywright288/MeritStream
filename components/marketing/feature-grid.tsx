@@ -45,10 +45,10 @@ export function FeatureGrid() {
         aria-hidden
         className="aurora-drift pointer-events-none absolute top-24 -right-40 -z-10 size-[560px] rounded-full bg-[radial-gradient(circle,#5157d842,transparent_70%)]"
       />
-      <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
+      <span className="reveal inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
         Built in
       </span>
-      <h2 className="font-heading mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance">
+      <h2 className="reveal font-heading mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance">
         Everything a payout needs. Nothing it doesn&apos;t.
       </h2>
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -56,7 +56,7 @@ export function FeatureGrid() {
           <div
             key={f.tag}
             style={{ animationDelay: `${i * 0.75}s` }}
-            className="float-y rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:bg-(--surface-hover)"
+            className="reveal-float rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:bg-(--surface-hover)"
           >
             <span className="font-mono text-[10px] font-bold tracking-[0.14em] text-(--fg-accent) uppercase">
               {f.tag}
