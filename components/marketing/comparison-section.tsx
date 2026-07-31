@@ -43,7 +43,7 @@ function Column({
 }) {
   return (
     <div
-      className={`rounded-(--radius-panel) border bg-card p-6 shadow-card md:p-7 ${
+      className={`reveal rounded-(--radius-panel) border bg-card p-6 shadow-card md:p-7 ${
         accent ? "border-(--focus-ring-soft)" : "border-(--border-glass)"
       }`}
     >

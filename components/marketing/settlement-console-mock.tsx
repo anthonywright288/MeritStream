@@ -13,14 +13,14 @@ const ROWS = [
 
 export function SettlementConsoleMock() {
   return (
-    <div
-      aria-hidden
-      className="relative w-full max-w-[560px] -rotate-2 rounded-(--radius-panel) border border-(--border-magnetic) bg-[linear-gradient(180deg,#ffffffdb,transparent_38%),radial-gradient(520px_260px_at_82%_16%,#0f9f9a2e,transparent_62%),radial-gradient(440px_280px_at_30%_0%,#5157d81a,transparent_64%)] p-4 shadow-hud backdrop-saturate-150"
-    >
+    <div aria-hidden className="relative w-full max-w-[560px]">
+      {/* Ghost panel peeking out behind — cheap depth, opposite tilt */}
+      <div className="absolute inset-x-5 -top-4 bottom-12 rotate-2 rounded-(--radius-panel) border border-(--border-glass) bg-(--surface-3) shadow-card" />
+      <div className="float-y relative -rotate-2 rounded-(--radius-panel) border border-(--border-magnetic) bg-[linear-gradient(180deg,#ffffffdb,transparent_38%),radial-gradient(520px_260px_at_82%_16%,#0f9f9a2e,transparent_62%),radial-gradient(440px_280px_at_30%_0%,#5157d81a,transparent_64%)] p-4 shadow-hud backdrop-saturate-150 transition-[rotate] duration-(--dur-soft) ease-(--ease-frost) hover:rotate-0">
       {/* Top bar: run status + cycle tag */}
       <div className="flex items-center justify-between gap-3 text-xs text-(--fg-tertiary)">
         <span className="inline-flex items-center gap-2 rounded-full border border-(--border-subtle) bg-(--surface-1) px-2.5 py-1.5 text-(--fg-secondary)">
-          <span className="size-1.5 rounded-full bg-(--success) shadow-[0_0_10px_var(--success-glow)]" />
+          <span className="pulse-glow size-1.5 rounded-full bg-(--success) shadow-[0_0_10px_var(--success-glow)]" />
           settlement run · deterministic
         </span>
         <span className="font-mono tracking-[0.12em] uppercase">weekly · arc testnet</span>
@@ -56,6 +56,7 @@ export function SettlementConsoleMock() {
       <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-(--border-subtle) pt-3 font-mono text-[11px] text-(--fg-tertiary) tabular-nums">
         <span>pool 241.00 USDC − 1.00 gas buffer</span>
         <span className="text-(--fg-success)">3 payouts · tx confirmed ✓</span>
+      </div>
       </div>
     </div>
   );

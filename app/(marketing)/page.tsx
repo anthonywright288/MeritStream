@@ -13,7 +13,7 @@ const DEMO_TEAM_ID = "75pw8g1f";
 /** One step card in the "how it works" rail. */
 function StepCard({ n, title, body }: { n: string; title: string; body: string }) {
   return (
-    <div className="rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[translate,background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-hover)">
+    <div className="reveal rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[translate,background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-hover)">
       <span className="inline-grid size-7 place-items-center rounded-full border border-(--pill-border) bg-(--pill-bg) font-mono text-[11px] font-bold text-(--fg-accent)">
         {n}
       </span>
@@ -27,21 +27,27 @@ export default function Home() {
   return (
     <main className="mx-auto w-full max-w-[1180px] px-5">
       {/* ============================== Hero ============================== */}
-      <section className="grid min-h-[92vh] items-center gap-12 pt-32 md:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)] md:pt-24">
+      <section className="relative grid min-h-[92vh] items-center gap-12 pt-32 md:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)] md:pt-24">
+        {/* Ambient aurora orbs — pre-blurred radial gradients drifting on the
+            compositor (no filter: blur), purely decorative depth */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          <div className="aurora-drift absolute -top-16 right-[6%] size-[440px] rounded-full bg-[radial-gradient(circle,#5157d824,transparent_70%)]" />
+          <div className="aurora-drift absolute top-[42%] -left-40 size-[500px] rounded-full bg-[radial-gradient(circle,#0f9f9a1f,transparent_70%)] [animation-delay:-7s]" />
+        </div>
         <div>
-          <div className="inline-flex items-center gap-2.5 rounded-[10px] border border-(--border-subtle) bg-(--surface-1) px-3 py-2 text-sm font-medium text-(--fg-secondary) shadow-card">
-            <span className="size-2 rounded-full bg-(--success) shadow-[0_0_14px_var(--success-glow)]" />
+          <div className="rise-in inline-flex items-center gap-2.5 rounded-[10px] border border-(--border-subtle) bg-(--surface-1) px-3 py-2 text-sm font-medium text-(--fg-secondary) shadow-card">
+            <span className="pulse-glow size-2 rounded-full bg-(--success) shadow-[0_0_14px_var(--success-glow)]" />
             Zero LLM · deterministic · on Arc
           </div>
-          <h1 className="font-heading mt-6 max-w-[12ch] text-5xl leading-[0.96] font-bold tracking-tight text-balance sm:text-6xl">
-            Merit in. USDC out.
+          <h1 className="rise-in font-heading mt-6 max-w-[12ch] text-5xl leading-[0.96] font-bold tracking-tight text-balance [animation-delay:90ms] sm:text-6xl">
+            Merit in. <span className="text-(--fg-accent)">USDC out.</span>
           </h1>
-          <p className="mt-6 max-w-xl text-xl leading-8 text-pretty text-(--fg-secondary)">
+          <p className="rise-in mt-6 max-w-xl text-xl leading-8 text-pretty text-(--fg-secondary) [animation-delay:170ms]">
             GitHub signals in, weighted USDC splits out, one automated
             settlement on Arc. Every payout links back to the exact commits
             that earned it.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="rise-in mt-8 flex flex-wrap gap-3 [animation-delay:250ms]">
             <Link
               href="/create"
               className="inline-flex h-13 items-center gap-2 rounded-(--radius-control) border border-black/10 bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-[0_18px_34px_-24px_rgba(50,56,159,.9),inset_0_1px_0_rgba(255,255,255,.2)] transition-[translate,background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-indigo-500 active:translate-y-0"
@@ -55,14 +61,14 @@ export default function Home() {
               Live demo team
             </Link>
           </div>
-          <p className="mt-4 text-sm text-(--fg-tertiary)">
+          <p className="rise-in mt-4 text-sm text-(--fg-tertiary) [animation-delay:330ms]">
             No wallet popup. No login. Auditable by anyone —{" "}
             <Link href={`/t/${DEMO_TEAM_ID}`} className="text-(--fg-accent) hover:underline">
               public view ↗
             </Link>
           </p>
           {/* Spec chips (design §5: mono glass chips) */}
-          <div className="mt-8 grid max-w-xl grid-cols-1 gap-2 sm:grid-cols-3">
+          <div className="rise-in mt-8 grid max-w-xl grid-cols-1 gap-2 [animation-delay:410ms] sm:grid-cols-3">
             {["Zero LLM", "Deterministic formula", "Auditable by anyone"].map((chip) => (
               <div
                 key={chip}
@@ -73,8 +79,35 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <div className="hidden justify-center sm:flex">
+        <div className="rise-in hidden justify-center [animation-delay:200ms] sm:flex">
           <SettlementConsoleMock />
+        </div>
+        {/* Settlement-pipeline ticker: a slow mono marquee along the hero's
+            bottom edge — every phrase is a real engine fact */}
+        <div
+          aria-hidden
+          className="relative self-end overflow-hidden pb-8 [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)] md:col-span-2"
+        >
+          <div className="ticker-track flex w-max gap-9">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="flex shrink-0 items-center gap-9 font-mono text-xs whitespace-nowrap text-(--fg-tertiary)">
+                {[
+                  "points = commits × w₁ + merged PRs × w₂",
+                  "share = points / total_points",
+                  "payout = share × (pool − gas buffer)",
+                  "one transfer per member",
+                  "dust stays in the pool",
+                  "zero LLM in the money path",
+                  "receipts down to the commit",
+                  "auditable by anyone",
+                ].map((t) => (
+                  <span key={t} className="inline-flex items-center gap-9">
+                    {t} <span className="text-(--fg-accent)">·</span>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -118,7 +151,7 @@ export default function Home() {
 
       {/* ========================= Transparency ========================= */}
       <section id="transparency" className="scroll-mt-28 pb-[104px]">
-        <div className="rounded-(--radius-panel) border border-(--border-glass) bg-card p-8 shadow-hud md:p-10">
+        <div className="reveal rounded-(--radius-panel) border border-(--border-glass) bg-card p-8 shadow-hud md:p-10">
           <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_auto]">
             <div>
               <span className="inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
