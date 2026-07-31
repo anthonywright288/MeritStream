@@ -34,49 +34,54 @@ const STOPS = [
 
 export function LifecycleSection() {
   return (
-    <section id="lifecycle" className="relative scroll-mt-28 pb-[104px]">
-      {/* Ambient aurora behind the rail */}
-      <div
-        aria-hidden
-        className="aurora-drift pointer-events-none absolute top-40 -left-44 -z-10 size-[560px] rounded-full bg-[radial-gradient(circle,#0f9f9a38,transparent_70%)] [animation-delay:-5s]"
-      />
-      <span className="reveal inline-flex items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
-        A cycle, end to end
-      </span>
-      <h2 className="reveal font-heading mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance">
-        From first commit to final receipt.
-      </h2>
-      <ol className="relative mt-10 space-y-4 border-l border-(--border-subtle) pl-6 md:pl-8">
-        {/* Indigo→teal line drawing itself down the rail as you scroll */}
-        <span
+    /* pin-track is taller than the viewport; pin-frame sticks inside it so the
+       section holds the screen while its five stops play, then releases. Both
+       are inert without scroll-driven animation support (see globals.css). */
+    <section id="lifecycle" className="pin-track relative scroll-mt-28 pb-[104px]">
+      <div className="pin-frame relative">
+        {/* Ambient aurora behind the rail */}
+        <div
           aria-hidden
-          className="rail-grow absolute inset-y-0 -left-px w-px bg-[linear-gradient(180deg,#5157d8b3,#0f9f9a80)]"
+          className="aurora-drift pointer-events-none absolute top-24 -left-44 -z-10 size-[560px] rounded-full bg-[radial-gradient(circle,#0f9f9a38,transparent_70%)] [animation-delay:-5s]"
         />
-        {STOPS.map((s, i) => (
-          <li key={s.phase} className="relative">
-            {/* Rail dot — indigo for active-feel on the money step. Staggered
-                pulse delays make the signal appear to travel down the rail. */}
-            <span
-              aria-hidden
-              style={{ animationDelay: `${i * 0.55}s` }}
-              className={`pulse-glow absolute top-6 -left-6 grid size-3.5 -translate-x-1/2 place-items-center rounded-full border md:-left-8 ${
-                i === 3
-                  ? "border-indigo-500 bg-indigo-500 shadow-[0_0_14px_var(--accent-glow)]"
-                  : "border-(--border-magnetic) bg-indigo-500/35"
-              }`}
-            />
-            <div className="reveal rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[translate,background-color] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-hover) md:p-6">
-              <p className="font-mono text-[10px] font-bold tracking-[0.14em] text-(--fg-accent) uppercase">
-                {s.phase}
-              </p>
-              <h3 className="font-heading mt-1.5 text-lg font-bold">{s.title}</h3>
-              <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-(--fg-secondary)">
-                {s.body}
-              </p>
-            </div>
-          </li>
-        ))}
-      </ol>
+        <span className="reveal inline-flex w-fit items-center rounded-(--radius-control) border border-(--pill-border) bg-(--pill-bg) px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-(--pill-fg) uppercase">
+          A cycle, end to end
+        </span>
+        <h2 className="reveal font-heading mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance">
+          From first commit to final receipt.
+        </h2>
+        <ol className="relative mt-8 space-y-3 border-l border-(--border-subtle) pl-6 md:pl-8">
+          {/* Indigo→teal line drawing itself down the rail as you scroll */}
+          <span
+            aria-hidden
+            className="rail-grow absolute inset-y-0 -left-px w-px bg-[linear-gradient(180deg,#5157d8b3,#0f9f9a80)]"
+          />
+          {STOPS.map((s, i) => (
+            <li key={s.phase} className="pin-item relative">
+              {/* Rail dot — indigo for active-feel on the money step. Staggered
+                  pulse delays make the signal appear to travel down the rail. */}
+              <span
+                aria-hidden
+                style={{ animationDelay: `${i * 0.55}s` }}
+                className={`pulse-glow absolute top-5 -left-6 grid size-3.5 -translate-x-1/2 place-items-center rounded-full border md:-left-8 ${
+                  i === 3
+                    ? "border-indigo-500 bg-indigo-500 shadow-[0_0_14px_var(--accent-glow)]"
+                    : "border-(--border-magnetic) bg-indigo-500/35"
+                }`}
+              />
+              <div className="reveal rounded-(--radius-panel) border border-(--border-glass) bg-card p-4 shadow-card transition-[translate,background-color] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-hover) md:p-5">
+                <p className="font-mono text-[10px] font-bold tracking-[0.14em] text-(--fg-accent) uppercase">
+                  {s.phase}
+                </p>
+                <h3 className="font-heading mt-1 text-lg font-bold">{s.title}</h3>
+                <p className="mt-1 max-w-3xl text-sm leading-relaxed text-(--fg-secondary)">
+                  {s.body}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
     </section>
   );
 }

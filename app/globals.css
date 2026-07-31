@@ -333,6 +333,57 @@
       animation-timeline: view();
       animation-range: cover 0% cover 78%;
     }
+
+    /* ---- Pinned section (lifecycle) ----
+       The track is taller than the viewport; the frame sticks while the page
+       scrolls through it, and `contain` on the track's own view timeline maps
+       exactly that pinned stretch to 0–100%. Each stop plays inside its own
+       slice, so the section can't be scrolled past until its content has run.
+       Desktop only: on small screens five cards can't fit one viewport, so
+       the section stays in normal flow there. */
+    /* min-height gate: all five stops must fit one viewport while pinned, or
+       the last card would sit below the fold with no way to scroll to it. */
+    @media (min-width: 1024px) and (min-height: 900px) {
+      .pin-track {
+        height: 260vh;
+        view-timeline-name: --cycle;
+        view-timeline-axis: block;
+      }
+      .pin-frame {
+        position: sticky;
+        top: 0;
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        justify-content: center;
+        padding-block: 5rem 1.5rem;
+      }
+      /* Compact typography while pinned so the stack clears the fold */
+      .pin-frame > h2 { margin-top: 1rem; font-size: 1.875rem; }
+      .pin-frame > ol { margin-top: 1.25rem; }
+      .pin-frame .pin-item + .pin-item { margin-top: 0.5rem; }
+      .pin-frame .pin-item > div { padding: 0.75rem 1rem; }
+      .pin-frame .pin-item h3 { margin-top: 0.15rem; font-size: 1rem; }
+      .pin-frame .pin-item p:last-child { margin-top: 0.15rem; font-size: 0.8125rem; }
+
+      .pin-item {
+        animation: rise-in both;
+        animation-timeline: --cycle;
+      }
+      /* nth-of-type, not nth-child: the rail <span> is the list's first child.
+         Stops finish at 82%, leaving a short tail to read the last one before
+         the section releases — no long dead scroll. */
+      .pin-item:nth-of-type(1) { animation-range: contain 0% contain 13%; }
+      .pin-item:nth-of-type(2) { animation-range: contain 17% contain 30%; }
+      .pin-item:nth-of-type(3) { animation-range: contain 34% contain 47%; }
+      .pin-item:nth-of-type(4) { animation-range: contain 51% contain 64%; }
+      .pin-item:nth-of-type(5) { animation-range: contain 68% contain 82%; }
+      /* Rail draws in step with the stops instead of with page scroll */
+      .pin-track .rail-grow {
+        animation-timeline: --cycle;
+        animation-range: contain 0% contain 82%;
+      }
+    }
   }
 }
 
