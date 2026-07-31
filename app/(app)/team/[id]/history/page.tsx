@@ -56,9 +56,16 @@ export default async function HistoryPage({
 
   return (
     <main className="mx-auto min-h-screen max-w-3xl space-y-4 px-4 py-10">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">{team.name} — settlement history</h1>
-        <Link href={`/team/${id}`} className="text-sm text-blue-500 hover:underline">
+      <div className="flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <p className="font-mono text-[11px] font-semibold tracking-[0.12em] text-(--fg-accent) uppercase">
+            Audit trail
+          </p>
+          <h1 className="font-heading mt-1 text-3xl font-bold tracking-tight">
+            {team.name} — settlement history
+          </h1>
+        </div>
+        <Link href={`/team/${id}`} className="text-sm font-medium text-(--fg-accent) hover:underline">
           ← dashboard
         </Link>
       </div>

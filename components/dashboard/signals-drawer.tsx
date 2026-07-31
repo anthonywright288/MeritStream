@@ -44,7 +44,7 @@ export function SignalsDrawer({
             <ul className="space-y-1">
               {commits.map((c) => (
                 <li key={c.sha} className="text-xs">
-                  <a href={c.html_url} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline">
+                  <a href={c.html_url} target="_blank" rel="noreferrer" className="text-(--fg-accent) hover:underline">
                     <code>{c.sha.slice(0, 8)}</code>
                   </a>{" "}
                   {c.message.split("\n")[0].slice(0, 60)}
@@ -58,7 +58,7 @@ export function SignalsDrawer({
             <ul className="space-y-1">
               {prs.map((p) => (
                 <li key={p.number} className="text-xs">
-                  <a href={p.html_url} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline">
+                  <a href={p.html_url} target="_blank" rel="noreferrer" className="text-(--fg-accent) hover:underline">
                     #{p.number}
                   </a>{" "}
                   merged {new Date(p.merged_at).toLocaleDateString()}

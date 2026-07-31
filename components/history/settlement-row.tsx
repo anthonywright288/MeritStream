@@ -17,26 +17,30 @@ export interface SettlementView {
   payouts: PayoutView[];
 }
 
-const STATUS_VARIANT: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  paid: "default",
+// Status → design-system triad (success/danger/warning surfaces, §1)
+const STATUS_VARIANT: Record<
+  string,
+  "success" | "secondary" | "destructive" | "warning" | "outline"
+> = {
+  paid: "success",
   no_activity: "secondary",
   partial: "destructive",
   insufficient_funds: "destructive",
-  running: "outline",
+  running: "warning",
 };
 
 export function SettlementRow({ settlement }: { settlement: SettlementView }) {
   const [open, setOpen] = useState(false);
   const payoutMap = new Map(settlement.payouts.map((p) => [p.memberId, p]));
   return (
-    <Card>
+    <Card className="transition-[translate,background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-px hover:bg-(--surface-hover)">
       <CardContent className="py-3">
         <button
           type="button"
           className="flex w-full items-center justify-between text-left"
           onClick={() => setOpen(!open)}
         >
-          <span className="text-sm">
+          <span className="font-mono text-sm tabular-nums">
             {new Date(settlement.cycleEnd).toLocaleDateString()} · pool{" "}
             {formatUsdcDisplay(settlement.poolAmount)} USDC
           </span>

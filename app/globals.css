@@ -7,9 +7,29 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  /* SF Pro system stack for headings/body, IBM Plex Mono for labels/metadata */
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-code), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-heading: var(--font-display);
+  /* lineaprompt palette exposed as Tailwind color utilities */
+  --color-frost-000: var(--frost-000);
+  --color-frost-050: var(--frost-050);
+  --color-frost-100: var(--frost-100);
+  --color-frost-200: var(--frost-200);
+  --color-ink-950: var(--ink-950);
+  --color-ink-800: var(--ink-800);
+  --color-ink-650: var(--ink-650);
+  --color-ink-500: var(--ink-500);
+  --color-indigo-500: var(--indigo-500);
+  --color-indigo-650: var(--indigo-650);
+  --color-teal-500: var(--teal-500);
+  --color-amber-500: var(--amber-500);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  /* signature shadows as shadow-card / shadow-hud utilities */
+  --shadow-card: var(--shadow-card);
+  --shadow-hud: var(--shadow-hud);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,38 +69,123 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  color-scheme: light;
+
+  /* =====================================================================
+     Design tokens — docs/design-system.md (extracted from lineaprompt)
+     ===================================================================== */
+
+  /* Raw scales */
+  --frost-000: #fbfdff;
+  --frost-050: #f5f8fc;
+  --frost-100: #edf3f8;
+  --frost-200: #d9e4ee;
+  --ink-950: #0d1420;
+  --ink-800: #1d2a3b;
+  --ink-650: #435066;
+  --ink-500: #667288;
+  --indigo-500: #5157d8;
+  --indigo-650: #32389f;
+  --teal-500: #0f9f9a;
+  --teal-soft: #0f9f9a1f;
+  --amber-500: #d88a1d;
+  --success: #16815f;
+  --danger: #b91c3b;
+  --warning: #d88a1d;
+
+  /* Page + translucent surfaces (frosted glass) */
+  --bg-page: var(--frost-100);
+  --surface-1: #ffffff9e;
+  --surface-2: #ffffff85;
+  --surface-3: #ffffff6b;
+  --surface-soft: #ffffff42;
+  --surface-strong: #ffffffd1;
+  --surface-hover: #ffffffe6;
+  --surface-success: #16815f1a;
+  --surface-danger: #b91c3b1a;
+  --surface-warning: #d88a1d1f;
+
+  /* Text roles */
+  --fg-primary: #0d1420f0;
+  --fg-secondary: #1d2a3bad;
+  --fg-tertiary: #4350668f;
+  --fg-accent: var(--indigo-650);
+  --fg-success: #0c6a4d;
+  --fg-danger: #8a1530;
+  --fg-warning: #8a5208;
+
+  /* Borders */
+  --border-glass: #ffffffe0;
+  --border-subtle: #3d4d6321;
+  --border-magnetic: #54658029;
+  --border-success: #16815f47;
+  --border-danger: #b91c3b47;
+  --border-warning: #d88a1d4d;
+
+  /* Focus / pill / glow */
+  --focus-ring: #5157d8b3;
+  --focus-ring-soft: #5157d829;
+  --pill-bg: #5157d817;
+  --pill-border: #5157d838;
+  --pill-fg: #30368f;
+  --accent-glow: #5157d847;
+  --success-glow: #16815f8c;
+
+  /* Signature shadows: deep floating blur + white inset top edge */
+  --shadow-card: 0 26px 70px -46px #34455c75, inset 0 1px 0 #ffffffdb;
+  --shadow-hud: 0 34px 96px -48px #3a4a648c, inset 0 1px 0 #ffffffd1;
+
+  /* Motion */
+  --dur-tap: 0.12s;
+  --dur-fast: 0.18s;
+  --dur-gentle: 0.24s;
+  --dur-soft: 0.32s;
+  --ease-frost: cubic-bezier(0.2, 0.72, 0.2, 1);
+
+  /* Radius: control 8px, panel 14px */
+  --radius-control: 8px;
+  --radius-panel: 14px;
+  --radius: 0.875rem; /* 14px — drives shadcn radius-lg (panels/cards) */
+
+  /* Fonts: SF Pro native stack + IBM Plex Mono (via next/font --font-code) */
+  --font-native: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  --font-body: var(--font-native);
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+
+  /* ==================== shadcn semantic mapping ==================== */
+  --background: var(--bg-page);
+  --foreground: var(--fg-primary);
+  --card: var(--surface-1);
+  --card-foreground: var(--fg-primary);
+  --popover: var(--surface-hover);
+  --popover-foreground: var(--fg-primary);
+  --primary: var(--indigo-650);
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-strong);
+  --secondary-foreground: var(--fg-primary);
+  --muted: var(--frost-050);
+  --muted-foreground: var(--fg-tertiary);
+  --accent: var(--pill-bg);
+  --accent-foreground: var(--pill-fg);
+  --destructive: var(--danger);
+  --border: var(--border-subtle);
+  --input: var(--border-subtle);
+  --ring: var(--focus-ring);
+  --chart-1: var(--indigo-500);
+  --chart-2: var(--teal-500);
+  --chart-3: var(--amber-500);
+  --chart-4: var(--ink-650);
+  --chart-5: var(--danger);
+  --sidebar: var(--surface-strong);
+  --sidebar-foreground: var(--fg-primary);
+  --sidebar-primary: var(--indigo-650);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--pill-bg);
+  --sidebar-accent-foreground: var(--pill-fg);
+  --sidebar-border: var(--border-subtle);
+  --sidebar-ring: var(--focus-ring);
 }
 
 .dark {
@@ -121,10 +226,49 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
     @apply font-sans;
+  }
+  /* Raw <code>/<kbd> (commit shas, hashes) always speak IBM Plex Mono */
+  code,
+  kbd {
+    font-family: var(--font-code), ui-monospace, SFMono-Regular, Menlo,
+      monospace;
+  }
+  body {
+    @apply text-foreground;
+    /* Layered frost wash: white sheen + indigo/teal tints over #edf3f8 */
+    background:
+      linear-gradient(135deg, #fffc, transparent 34%),
+      radial-gradient(940px 560px at 16% -4%, #ffffffe6, transparent 60%),
+      radial-gradient(780px 520px at 92% 14%, #c4dae97a, transparent 62%),
+      radial-gradient(520px 360px at 66% 18%, #0f9f9a14, transparent 66%),
+      radial-gradient(700px 520px at 52% 110%, #5157d81a, transparent 58%),
+      var(--bg-page);
+    text-rendering: optimizelegibility;
+  }
+  /* Faint 56px blueprint grid, fading out down the page */
+  body::before {
+    content: "";
+    z-index: -2;
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    background-image: linear-gradient(#1520300b 1px, #0000 1px),
+      linear-gradient(90deg, #1520300b 1px, #0000 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: linear-gradient(#000 0%, #0000 72%);
+    mask-image: linear-gradient(#000 0%, #0000 72%);
+  }
+  /* Film-grain noise overlay */
+  body::after {
+    content: "";
+    z-index: -1;
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    opacity: 0.2;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.14 0 0 0 0 0.17 0 0 0 0 0.22 0 0 0 .12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 }

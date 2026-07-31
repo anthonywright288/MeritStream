@@ -60,15 +60,27 @@ export function DashboardView({
   }, [refresh]);
 
   if (loading) return <p className="text-muted-foreground">Loading signals…</p>;
-  if (!data) return <p className="text-red-500">Couldn’t load team: {error}</p>;
+  if (!data) return <p className="text-(--fg-danger)">Couldn’t load team: {error}</p>;
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h1 className="text-2xl font-bold">{data.teamName}</h1>
-          <p className="text-muted-foreground text-sm">
-            {data.repo} · {data.cycle} cycle · settles in {data.daysUntilSettlement}d
+          {/* Eyebrow + display title + mono meta chips (design §2) */}
+          <p className="font-mono text-[11px] font-semibold tracking-[0.12em] text-(--fg-accent) uppercase">
+            {readOnly ? "Public transparency view" : "Team dashboard"}
+          </p>
+          <h1 className="font-heading mt-1 text-3xl font-bold tracking-tight text-balance">
+            {data.teamName}
+          </h1>
+          <p className="mt-1.5 flex flex-wrap items-center gap-2 text-sm">
+            <span className="rounded-(--radius-control) border border-(--border-subtle) bg-(--surface-2) px-2 py-0.5 font-mono text-xs text-(--fg-secondary)">
+              {data.repo}
+            </span>
+            <span className="text-(--fg-tertiary)">
+              {data.cycle} cycle · settles in{" "}
+              <span className="font-mono tabular-nums">{data.daysUntilSettlement}d</span>
+            </span>
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -78,7 +90,7 @@ export function DashboardView({
           <Button size="sm" variant="outline" onClick={refresh}>
             Refresh
           </Button>
-          <a href={`/team/${teamId}/history`} className="text-xs text-blue-500 hover:underline">
+          <a href={`/team/${teamId}/history`} className="text-xs text-(--fg-accent) hover:underline">
             History
           </a>
         </div>
@@ -93,25 +105,40 @@ export function DashboardView({
         <SettleNowButton teamId={teamId} onSettled={refresh} />
       )}
 
+      {/* Stat strip: eyebrow labels + large mono figures, straight columns */}
       <Card>
-        <CardContent className="flex flex-wrap gap-6 py-4 text-sm">
+        <CardContent className="flex flex-wrap items-end gap-x-10 gap-y-4 py-4">
           <div>
-            <p className="text-muted-foreground text-xs">Pool balance</p>
-            <p className="font-semibold">{formatUsdcDisplay(data.poolBalance)} USDC</p>
+            <p className="font-mono text-[10px] font-semibold tracking-[0.12em] text-(--fg-tertiary) uppercase">
+              Pool balance
+            </p>
+            <p className="mt-1 font-mono text-2xl font-semibold tabular-nums">
+              {formatUsdcDisplay(data.poolBalance)}
+              <span className="ml-1.5 text-sm font-medium text-(--fg-tertiary)">USDC</span>
+            </p>
           </div>
           <div>
-            <p className="text-muted-foreground text-xs">Distributable (after 1 USDC gas buffer)</p>
-            <p className="font-semibold">{formatUsdcDisplay(data.distributable)} USDC</p>
+            <p className="font-mono text-[10px] font-semibold tracking-[0.12em] text-(--fg-tertiary) uppercase">
+              Distributable · after 1 USDC gas buffer
+            </p>
+            <p className="mt-1 font-mono text-2xl font-semibold tabular-nums text-(--fg-accent)">
+              {formatUsdcDisplay(data.distributable)}
+              <span className="ml-1.5 text-sm font-medium text-(--fg-tertiary)">USDC</span>
+            </p>
           </div>
-          <div>
-            <p className="text-muted-foreground text-xs">Pool address</p>
-            <p className="font-mono text-xs">{data.poolAddress}</p>
+          <div className="min-w-0">
+            <p className="font-mono text-[10px] font-semibold tracking-[0.12em] text-(--fg-tertiary) uppercase">
+              Pool address
+            </p>
+            <p className="mt-1.5 truncate rounded-(--radius-control) border border-(--border-subtle) bg-(--surface-2) px-2 py-1 font-mono text-xs text-(--fg-secondary)">
+              {data.poolAddress}
+            </p>
           </div>
         </CardContent>
       </Card>
 
       {error && (
-        <p className="text-xs text-amber-500">
+        <p className="rounded-(--radius-control) border border-(--border-warning) bg-(--surface-warning) px-3 py-2 text-xs text-(--fg-warning)">
           refresh failed ({error}) — showing data from {timeAgo(data.syncedAt)}
         </p>
       )}
@@ -129,7 +156,8 @@ export function DashboardView({
 
       <p className="text-muted-foreground text-xs">
         Projected shares update every 60s from public GitHub data. Dust{" "}
-        {formatUsdcDisplay(data.dustBaseUnits)} USDC stays in the pool.
+        <span className="font-mono tabular-nums">{formatUsdcDisplay(data.dustBaseUnits)} USDC</span>{" "}
+        stays in the pool.
       </p>
     </div>
   );

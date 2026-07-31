@@ -107,7 +107,8 @@ export function TeamForm() {
             <Label htmlFor="cycle">Cycle</Label>
             <select
               id="cycle"
-              className="border-input bg-transparent h-9 w-full rounded-md border px-3 text-sm"
+              // matches the Input primitive: surface-strong glass, 8px radius, 44px tall
+              className="h-11 w-full rounded-(--radius-control) border border-input bg-(--surface-strong) px-3 text-sm shadow-[inset_0_1px_0_#ffffffe6] transition-[border-color,box-shadow] duration-(--dur-fast) outline-none focus-visible:border-(--focus-ring) focus-visible:ring-4 focus-visible:ring-[#5157d81f]"
               value={cycle}
               onChange={(e) => setCycle(e.target.value as "weekly" | "monthly")}
             >
@@ -131,7 +132,11 @@ export function TeamForm() {
             + Add member
           </Button>
         </div>
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {error && (
+          <p className="rounded-(--radius-control) border border-(--border-danger) bg-(--surface-danger) px-3 py-2 text-sm text-(--fg-danger)">
+            {error}
+          </p>
+        )}
         <Button className="w-full" onClick={submit} disabled={submitting}>
           {submitting ? "Creating… (validating repo & members)" : "Create team"}
         </Button>

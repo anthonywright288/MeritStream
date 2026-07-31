@@ -41,7 +41,7 @@ export function CreateSuccess({ result }: { result: CreateResult }) {
             </div>
           </div>
         </div>
-        <div className="rounded-md border border-amber-500/50 bg-amber-500/10 p-4">
+        <div className="rounded-(--radius-control) border border-(--border-warning) bg-(--surface-warning) p-4">
           <p className="mb-2 text-sm font-semibold">
             ⚠️ Admin token — save it NOW. It is shown only this once and cannot be recovered.
           </p>

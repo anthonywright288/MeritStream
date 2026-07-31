@@ -61,11 +61,11 @@ export function SettleNowButton({
             onChange={(e) => setToken(e.target.value)}
           />
         )}
-        <Button onClick={settle} disabled={running}>
+        <Button size="lg" className="px-5" onClick={settle} disabled={running}>
           {running ? "Settling…" : "Settle now"}
         </Button>
       </div>
-      {message && <p className="text-xs">{message}</p>}
+      {message && <p className="font-mono text-xs">{message}</p>}
     </div>
   );
 }
