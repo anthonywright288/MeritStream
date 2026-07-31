@@ -402,35 +402,39 @@
   }
   body {
     @apply text-foreground;
-    /* Layered frost wash: white sheen + indigo/teal tints over #edf3f8 */
-    background:
-      linear-gradient(135deg, #fffc, transparent 34%),
-      radial-gradient(940px 560px at 16% -4%, #ffffffe6, transparent 60%),
-      radial-gradient(780px 520px at 92% 14%, #c4dae97a, transparent 62%),
-      radial-gradient(520px 360px at 66% 18%, #0f9f9a14, transparent 66%),
-      radial-gradient(700px 520px at 52% 110%, #5157d81a, transparent 58%),
-      var(--bg-page);
+    background: var(--bg-page);
     text-rendering: optimizelegibility;
   }
-  /* Faint 56px blueprint grid, fading out down the page */
+  /* Frost wash + 56px blueprint grid as ONE viewport-anchored layer.
+     Previously the wash was painted on <body> (sized to the full 8000px+
+     document, so it only showed at the very top) while the grid was fixed
+     with a fade mask — two different reference frames, which read as a seam
+     parked on screen while content scrolled past it. A fixed element is
+     composited once and does not repaint on scroll, unlike
+     background-attachment: fixed. */
   body::before {
     content: "";
-    z-index: -2;
+    z-index: -20;
     pointer-events: none;
     position: fixed;
     inset: 0;
-    background-image: linear-gradient(#1520300b 1px, #0000 1px),
-      linear-gradient(90deg, #1520300b 1px, #0000 1px);
-    background-size: 56px 56px;
-    -webkit-mask-image: linear-gradient(#000 0%, #0000 72%);
-    mask-image: linear-gradient(#000 0%, #0000 72%);
+    background-image: linear-gradient(#15203009 1px, #0000 1px),
+      linear-gradient(90deg, #15203009 1px, #0000 1px),
+      linear-gradient(135deg, #ffffffcc, transparent 38%),
+      radial-gradient(1100px 680px at 14% -6%, #ffffffe6, transparent 62%),
+      radial-gradient(900px 620px at 94% 8%, #c4dae96b, transparent 64%),
+      radial-gradient(700px 520px at 62% 34%, #0f9f9a14, transparent 68%),
+      radial-gradient(900px 640px at 44% 108%, #5157d81f, transparent 62%);
+    background-size: 56px 56px, 56px 56px, auto, auto, auto, auto, auto;
   }
   /* Film-grain noise overlay. Normal blending on purpose: mix-blend-mode on
      a fixed full-viewport layer forces a whole-screen composite every frame
      and makes scrolling visibly laggy. */
   body::after {
     content: "";
-    z-index: -1;
+    /* above the wash (-20) and the section aurora orbs (-10) so the grain
+       sits over the whole backdrop */
+    z-index: -5;
     pointer-events: none;
     position: fixed;
     inset: 0;
