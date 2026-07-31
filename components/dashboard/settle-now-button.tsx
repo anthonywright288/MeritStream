@@ -36,9 +36,9 @@ export function SettleNowButton({
         body: JSON.stringify({ force: true }),
       });
       const json = await res.json();
-      if (res.status === 401) setMessage("Unauthorized — wrong admin token");
+      if (res.status === 401) setMessage("Unauthorized: wrong admin token");
       else if (json.status === "insufficient_funds")
-        setMessage(`Insufficient funds — short by ${json.shortfallBaseUnits} base units. Nothing was paid.`);
+        setMessage(`Insufficient funds: short by ${json.shortfallBaseUnits} base units. Nothing was paid.`);
       else if (json.status === "paid") setMessage(`Settled ✓ paid ${json.result?.paid} member(s)`);
       else setMessage(`${json.status}: ${json.detail ?? JSON.stringify(json.result ?? "")}`);
       onSettled();

@@ -113,7 +113,7 @@ export async function PATCH(request: Request, { params }: Ctx) {
       .limit(1);
     if (running?.length) {
       return NextResponse.json(
-        { error: "settlement running — wallet edits blocked" },
+        { error: "settlement running: wallet edits blocked" },
         { status: 409 },
       );
     }

@@ -84,7 +84,7 @@ export async function runSettlement(
       return {
         code: 409,
         status: "already_settled",
-        detail: "cycle was just settled — nothing new to settle yet",
+        detail: "cycle was just settled, nothing new to settle yet",
       };
     }
     windowStart = window.start;

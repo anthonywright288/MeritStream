@@ -18,7 +18,7 @@ export function FinalCtaSection({ demoTeamId }: { demoTeamId: string }) {
         </h2>
         <p className="mx-auto mt-4 max-w-xl leading-relaxed text-(--fg-secondary)">
           Create a team, fund the pool, and let the cycle run. No login, no
-          wallet popup — just a repo and a list of who gets paid.
+          wallet popup, just a repo and a list of who gets paid.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link

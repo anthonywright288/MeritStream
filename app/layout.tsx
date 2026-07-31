@@ -13,7 +13,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MeritStream — Merit in. USDC out.",
+  title: "MeritStream · Merit in. USDC out.",
   description:
     "GitHub signals in, weighted USDC splits out, one automated settlement on Arc. Deterministic, zero LLM, auditable by anyone.",
 };

@@ -10,15 +10,15 @@ const FAQS = [
   },
   {
     q: "What exactly counts as a signal?",
-    a: "Commits and merged pull requests in the team's public GitHub repo, inside the current cycle window. Nothing self-reported, nothing private — if it isn't visible on GitHub, it doesn't count.",
+    a: "Commits and merged pull requests in the team's public GitHub repo, inside the current cycle window. Nothing self-reported, nothing private. If it isn't visible on GitHub, it doesn't count.",
   },
   {
     q: "What happens if the pool can't cover a cycle?",
-    a: "The run reports insufficient funds and stops before any transfer — nobody gets a partial surprise. Fund the pool and settle again; a 1 USDC buffer is always kept back for gas.",
+    a: "The run reports insufficient funds and stops before any transfer, so nobody gets a partial surprise. Fund the pool and settle again; a 1 USDC buffer is always kept back for gas.",
   },
   {
     q: "Can the split be gamed or quietly edited?",
-    a: "The weights are fixed when the team is created, and every settlement freezes a snapshot of the window, weights and counted signals before paying. Each payout links to its commits, PRs and tx hash — anyone can re-derive the math.",
+    a: "The weights are fixed when the team is created, and every settlement freezes a snapshot of the window, weights and counted signals before paying. Each payout links to its commits, PRs and tx hash, so anyone can re-derive the math.",
   },
   {
     q: "Where does the money actually live?",

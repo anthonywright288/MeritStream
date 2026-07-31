@@ -67,7 +67,7 @@ export default function Home() {
             </Link>
           </div>
           <p className="rise-in mt-4 text-sm text-(--fg-tertiary) [animation-delay:330ms]">
-            No wallet popup. No login. Auditable by anyone —{" "}
+            No wallet popup. No login. Auditable by anyone:{" "}
             <Link href={`/t/${DEMO_TEAM_ID}`} className="text-(--fg-accent) hover:underline">
               public view ↗
             </Link>
@@ -109,7 +109,7 @@ export default function Home() {
             n="01"
             delay="0s"
             title="Signals in"
-            body="Public GitHub activity only: commits and merged PRs in the cycle window. Pulled straight from the repo — nothing self-reported."
+            body="Public GitHub activity only: commits and merged PRs in the cycle window. Pulled straight from the repo, nothing self-reported."
           />
           <StepCard
             n="02"
@@ -121,7 +121,7 @@ export default function Home() {
             n="03"
             delay="1.8s"
             title="One settlement run"
-            body="Cron freezes a snapshot, then pays every member their share in USDC on Arc — one transfer each, dust stays in the pool."
+            body="Cron freezes a snapshot, then pays every member their share in USDC on Arc: one transfer each, dust stays in the pool."
           />
         </div>
       </section>
@@ -146,7 +146,7 @@ export default function Home() {
               <p className="mt-3 max-w-2xl leading-relaxed text-(--fg-secondary)">
                 Each settlement freezes a snapshot: the window, the weights,
                 every counted commit and PR, and the tx hash of every USDC
-                transfer. Contributors verify their share on a read-only page —
+                transfer. Contributors verify their share on a read-only page,
                 no account needed.
               </p>
             </div>

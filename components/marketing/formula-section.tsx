@@ -19,7 +19,7 @@ export function FormulaSection() {
           <span aria-hidden className="sheen opacity-40" />
           <p className="flex items-center gap-2 font-mono text-[11px] font-semibold tracking-[0.12em] text-white/50 uppercase">
             <span className="pulse-glow inline-block size-1.5 rounded-full bg-[#81e7dd] shadow-[0_0_10px_#0f9f9a99]" />
-            settlement.ts — deterministic core
+            settlement.ts · deterministic core
           </p>
           <div className="mt-4 space-y-2 font-mono text-sm leading-7 tabular-nums md:text-base">
             <p>
@@ -41,7 +41,7 @@ export function FormulaSection() {
           </div>
           <p className="mt-5 border-t border-white/10 pt-4 text-sm leading-relaxed text-white/60">
             Weights w₁ and w₂ are fixed at team creation. Rounding dust never
-            disappears into anyone&apos;s pocket — it stays in the pool for the
+            disappears into anyone&apos;s pocket. It stays in the pool for the
             next cycle.
           </p>
         </div>
@@ -54,7 +54,7 @@ export function FormulaSection() {
             },
             {
               t: "No AI in the money path",
-              b: "Zero LLM anywhere in settlement. The same inputs always produce the same payouts — reproducible by anyone with the repo.",
+              b: "Zero LLM anywhere in settlement. The same inputs always produce the same payouts, reproducible by anyone with the repo.",
             },
             {
               t: "Agreed once, enforced every cycle",

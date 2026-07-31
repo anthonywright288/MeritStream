@@ -20,7 +20,7 @@ const FEATURES = [
   {
     tag: "receipts",
     title: "Receipts down to the commit",
-    body: "Every payout links to the exact commits and merged PRs that earned it — and to the USDC transfer hash on Arc.",
+    body: "Every payout links to the exact commits and merged PRs that earned it, and to the USDC transfer hash on Arc.",
   },
   {
     tag: "custody",
@@ -35,7 +35,7 @@ const FEATURES = [
   {
     tag: "autopilot",
     title: "Settles on schedule",
-    body: "A daily cron closes finished cycles automatically. Admins can also settle on demand with a one-time token — no login system to breach.",
+    body: "A daily cron closes finished cycles automatically. Admins can also settle on demand with a one-time token, no login system to breach.",
   },
 ];
 

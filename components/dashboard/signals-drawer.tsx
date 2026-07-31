@@ -35,7 +35,7 @@ export function SignalsDrawer({
       <SheetTrigger render={<Button variant="outline" size="sm">Signals</Button>} />
       <SheetContent className="overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>@{username} — counted signals</SheetTitle>
+          <SheetTitle>@{username} · counted signals</SheetTitle>
         </SheetHeader>
         <div className="space-y-4 px-4 pb-8">
           <div>

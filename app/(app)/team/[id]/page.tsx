@@ -1,6 +1,6 @@
 import { DashboardView } from "@/components/dashboard/dashboard-view";
 
-export const metadata = { title: "Team dashboard — MeritStream" };
+export const metadata = { title: "Team dashboard · MeritStream" };
 
 export default async function TeamPage({
   params,

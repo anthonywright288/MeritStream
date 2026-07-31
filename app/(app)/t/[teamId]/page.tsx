@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { DashboardView } from "@/components/dashboard/dashboard-view";
 
-export const metadata = { title: "Public team view — MeritStream" };
+export const metadata = { title: "Public team view · MeritStream" };
 
 /**
  * PRD 4.4 — shareable read-only transparency page. Contributors use it to

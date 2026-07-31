@@ -8,12 +8,12 @@ const STOPS = [
   {
     phase: "day 0",
     title: "Create the team",
-    body: "Name, public repo, members (GitHub username + payout address), and the two weights. The team gets its own USDC pool address on Arc — fund it by QR or plain transfer.",
+    body: "Name, public repo, members (GitHub username + payout address), and the two weights. The team gets its own USDC pool address on Arc: fund it by QR or plain transfer.",
   },
   {
     phase: "during the cycle",
     title: "Signals accrue in the open",
-    body: "Commits and merged PRs are counted from the repo as they land. The dashboard and the public read-only page show live standings — no one is surprised at the end.",
+    body: "Commits and merged PRs are counted from the repo as they land. The dashboard and the public read-only page show live standings, so no one is surprised at the end.",
   },
   {
     phase: "cycle closes",
@@ -23,7 +23,7 @@ const STOPS = [
   {
     phase: "settlement",
     title: "One transfer per member",
-    body: "The pool, minus a 1 USDC gas buffer, is split by share and paid out — one direct USDC transfer per member on Arc. If the pool can’t cover it, the run stops instead.",
+    body: "The pool, minus a 1 USDC gas buffer, is split by share and paid out: one direct USDC transfer per member on Arc. If the pool can’t cover it, the run stops instead.",
   },
   {
     phase: "forever after",

@@ -98,7 +98,7 @@ export function DashboardView({
 
       {readOnly ? (
         <p className="text-muted-foreground text-xs">
-          Public transparency view — read-only. Every number below is derived
+          Public transparency view, read-only. Every number below is derived
           from public GitHub data and the on-chain pool balance.
         </p>
       ) : (
@@ -139,12 +139,12 @@ export function DashboardView({
 
       {error && (
         <p className="rounded-(--radius-control) border border-(--border-warning) bg-(--surface-warning) px-3 py-2 text-xs text-(--fg-warning)">
-          refresh failed ({error}) — showing data from {timeAgo(data.syncedAt)}
+          refresh failed ({error}), showing data from {timeAgo(data.syncedAt)}
         </p>
       )}
       {data.noActivity && (
         <p className="text-muted-foreground text-sm">
-          No activity yet this cycle — pool rolls over if it stays that way.
+          No activity yet this cycle. Pool rolls over if it stays that way.
         </p>
       )}
 

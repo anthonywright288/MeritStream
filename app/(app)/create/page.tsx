@@ -1,6 +1,6 @@
 import { TeamForm } from "@/components/create/team-form";
 
-export const metadata = { title: "Create team — MeritStream" };
+export const metadata = { title: "Create team · MeritStream" };
 
 export default function CreatePage() {
   return (

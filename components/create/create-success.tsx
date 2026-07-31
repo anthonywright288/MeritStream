@@ -30,7 +30,7 @@ export function CreateSuccess({ result }: { result: CreateResult }) {
       </CardHeader>
       <CardContent className="space-y-6">
         <div>
-          <p className="mb-2 text-sm font-medium">Fund the pool — send test USDC (Arc) to:</p>
+          <p className="mb-2 text-sm font-medium">Fund the pool: send test USDC (Arc) to:</p>
           <div className="flex items-center gap-4">
             <QRCodeSVG value={result.poolAddress} size={112} />
             <div className="space-y-2">
@@ -43,7 +43,7 @@ export function CreateSuccess({ result }: { result: CreateResult }) {
         </div>
         <div className="rounded-(--radius-control) border border-(--border-warning) bg-(--surface-warning) p-4">
           <p className="mb-2 text-sm font-semibold">
-            ⚠️ Admin token — save it NOW. It is shown only this once and cannot be recovered.
+            ⚠️ Admin token: save it NOW. It is shown only this once and cannot be recovered.
           </p>
           <code className="block break-all text-xs">{result.adminToken}</code>
           <Button size="sm" className="mt-2" onClick={() => copy("token", result.adminToken)}>

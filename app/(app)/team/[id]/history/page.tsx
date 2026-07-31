@@ -2,7 +2,7 @@ import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { SettlementRow, type SettlementView } from "@/components/history/settlement-row";
 
-export const metadata = { title: "Settlement history — MeritStream" };
+export const metadata = { title: "Settlement history · MeritStream" };
 export const dynamic = "force-dynamic";
 
 /** The audit-trail page: every past cycle, its frozen snapshot, its txs. */
@@ -62,7 +62,7 @@ export default async function HistoryPage({
             Audit trail
           </p>
           <h1 className="font-heading mt-1 text-3xl font-bold tracking-tight">
-            {team.name} — settlement history
+            {team.name} · settlement history
           </h1>
         </div>
         <Link href={`/team/${id}`} className="text-sm font-medium text-(--fg-accent) hover:underline">

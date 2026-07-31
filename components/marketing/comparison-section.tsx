@@ -7,7 +7,7 @@
 const ROWS = [
   {
     dim: "Tracking effort",
-    old: "Someone tallies contributions in a spreadsheet — when they remember.",
+    old: "Someone tallies contributions in a spreadsheet, when they remember.",
     stream: "Commits and merged PRs pulled straight from the public GitHub repo.",
   },
   {
@@ -28,7 +28,7 @@ const ROWS = [
   {
     dim: "Trusting the result",
     old: "Take the admin’s word for it.",
-    stream: "Receipts down to the commit, the PR and the tx hash — auditable by anyone.",
+    stream: "Receipts down to the commit, the PR and the tx hash, auditable by anyone.",
   },
 ];
 

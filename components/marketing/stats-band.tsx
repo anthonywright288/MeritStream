@@ -7,7 +7,7 @@ import type { CSSProperties } from "react";
  */
 
 const STATS = [
-  { value: "2", label: "signal types — commits & merged PRs" },
+  { value: "2", label: "signal types: commits & merged PRs" },
   { value: "1", label: "formula, fixed at team creation" },
   { value: "1", label: "USDC transfer per member per cycle" },
   { value: "0", label: "LLM calls in the money path" },
