@@ -1,3 +1,4 @@
+import { AppearObserver } from "@/components/marketing/appear-observer";
 import { MarketingNav } from "@/components/nav/marketing-nav";
 
 /**
@@ -10,6 +11,7 @@ export default function MarketingLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
+      <AppearObserver />
       <MarketingNav />
       {children}
     </>

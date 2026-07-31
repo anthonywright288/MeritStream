@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 /**
  * Stats band — a strip of mono stat tiles under the hero (design §2: numbers
  * as extrabold display, labels as tracked mono). Every figure is a true
@@ -18,7 +20,7 @@ export function StatsBand() {
         {STATS.map((s, i) => (
           <div
             key={s.label}
-            style={{ animationDelay: `${i * 0.7}s` }}
+            style={{ "--float-delay": `${i * 0.7}s` } as CSSProperties}
             className="reveal-float rounded-(--radius-panel) border border-(--border-glass) bg-(--surface-2) px-5 py-4 shadow-card"
           >
             <p className="font-heading text-4xl font-extrabold tracking-tight tabular-nums text-(--fg-accent)">

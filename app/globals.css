@@ -296,43 +296,37 @@
     to { transform: scaleY(1); }
   }
 
-  /* Cards that both float continuously AND reveal on scroll need the float
-     here as a base so browsers without view timelines still get idle motion. */
-  .reveal-float { animation: float-y 7s ease-in-out infinite; }
+  /* ---- Appear-on-scroll (IntersectionObserver + time-based animation) ----
+     AppearObserver adds `js` to <html> after hydration and `in-view` to each
+     element the first time it enters the viewport. Elements are only hidden
+     once `js` exists, so without JavaScript everything stays visible. */
+  .js .reveal:not(.in-view),
+  .js .reveal-left:not(.in-view),
+  .js .reveal-right:not(.in-view),
+  .js .reveal-scale:not(.in-view),
+  .js .reveal-float:not(.in-view) {
+    opacity: 0;
+  }
+  .reveal.in-view { animation: rise-in 0.65s var(--ease-frost) both; }
+  .reveal-left.in-view { animation: slide-in-left 0.7s var(--ease-frost) both; }
+  .reveal-right.in-view { animation: slide-in-right 0.7s var(--ease-frost) both; }
+  .reveal-scale.in-view { animation: scale-in 0.7s var(--ease-frost) both; }
 
-  /* Scroll-linked reveals: progressive enhancement, browsers without view
-     timelines (and reduced-motion users) simply see the content. */
+  /* Cards that idle-float always; once seen they ALSO play the entrance.
+     --float-delay staggers only the float, never the entrance. */
+  .reveal-float {
+    animation: float-y 7s ease-in-out infinite;
+    animation-delay: var(--float-delay, 0s);
+  }
+  .reveal-float.in-view {
+    animation:
+      rise-in 0.65s var(--ease-frost) both,
+      float-y 7s ease-in-out infinite;
+    animation-delay: 0s, var(--float-delay, 0s);
+  }
+
+  /* Lifecycle rail keeps the scroll-scrubbed draw — it maps progress */
   @supports (animation-timeline: view()) {
-    .reveal {
-      animation: rise-in both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 48%;
-    }
-    .reveal-left {
-      animation: slide-in-left both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 52%;
-    }
-    .reveal-right {
-      animation: slide-in-right both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 52%;
-    }
-    .reveal-scale {
-      animation: scale-in both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 55%;
-    }
-    /* Scroll reveal (transform) + idle float (translate) in one element:
-       per-animation timelines — first is scroll-linked, second runs on time.
-       animation-delay staggers only the float (delay is ignored by
-       scroll-linked animations). */
-    .reveal-float {
-      animation: rise-in both, float-y 7s ease-in-out infinite;
-      animation-timeline: view(), auto;
-      animation-range: entry 0% entry 48%, normal;
-    }
-    /* Lifecycle rail draws itself as the list scrolls through the viewport */
     .rail-grow {
       transform-origin: top;
       animation: grow-y both linear;

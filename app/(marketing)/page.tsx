@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { ComparisonSection } from "@/components/marketing/comparison-section";
 import { FaqSection } from "@/components/marketing/faq-section";
@@ -15,7 +16,7 @@ const DEMO_TEAM_ID = "75pw8g1f";
 function StepCard({ n, title, body, delay }: { n: string; title: string; body: string; delay: string }) {
   return (
     <div
-      style={{ animationDelay: delay }}
+      style={{ "--float-delay": delay } as CSSProperties}
       className="reveal-float rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:bg-(--surface-hover)"
     >
       <span className="inline-grid size-7 place-items-center rounded-full border border-(--pill-border) bg-(--pill-bg) font-mono text-[11px] font-bold text-(--fg-accent)">

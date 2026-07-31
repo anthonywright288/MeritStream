@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 /**
  * Feature grid — six true product facts as frost cards (design §5
  * workflow-card hover). Icons are inline SVG dots/glyph-free to avoid icon
@@ -55,7 +57,7 @@ export function FeatureGrid() {
         {FEATURES.map((f, i) => (
           <div
             key={f.tag}
-            style={{ animationDelay: `${i * 0.75}s` }}
+            style={{ "--float-delay": `${i * 0.75}s` } as CSSProperties}
             className="reveal-float rounded-(--radius-panel) border border-(--border-glass) bg-card p-5 shadow-card transition-[background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:bg-(--surface-hover)"
           >
             <span className="font-mono text-[10px] font-bold tracking-[0.14em] text-(--fg-accent) uppercase">
