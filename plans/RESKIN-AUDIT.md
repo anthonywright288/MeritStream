@@ -147,8 +147,10 @@ sẵn ở `marketing-nav.tsx`, team-id chip đổi từ `sm:inline` sang `lg:inl
 dùng ở `dashboard-view.tsx`). Chỉ đổi className, không đổi logic. `npm test` chạy lại sau fix:
 40/40 xanh.
 
-**Chưa re-verify bằng ảnh chụp thật** (tool trình duyệt vẫn không đáng tin, xem mục 6) — cần
-user tự mở lại trên điện thoại thật để xác nhận hết phải zoom.
+**Xác nhận (2026-08-04, sau deploy prod):** user tự test lại trên điện thoại thật, KHÔNG còn
+phải zoom-out nữa — fix hoạt động đúng trên production (`meritstream-six.vercel.app`). Tool
+trình duyệt của Claude vẫn không mô phỏng viewport hẹp đáng tin trong suốt phiên này (kể cả
+sau nhiều lần thử) nên phần verify hình ảnh dựa hoàn toàn vào test tay của user.
 
 ## `scripts/phase2-integration-test.ts` — đã chạy
 
@@ -160,13 +162,30 @@ tạo ra, nhưng theo thiết kế sẵn của script **giữ lại 1 team demo 
 - Admin token: `51236b95e0adb6293b28e175ffcb550257a5fe970acd64a5365e5c1d992382f7` (LƯU LẠI — lần
   này còn token nên settle được nếu muốn, khác 2 team demo cũ đã mất token).
 
-## Unresolved questions (cần user tự làm)
+## Ship: commit + push + deploy
 
-1. **Team test `6_pRFHu4`** — ĐÃ XOÁ (user xác nhận xong qua Supabase SQL editor).
-2. **Fix mobile overflow (mục Update ở trên)** — cần user re-test trên điện thoại thật, xác
-   nhận hết phải zoom-out, đặc biệt trang `/team/<id>`.
-3. **`scripts/phase2-integration-test.ts`** — ĐÃ CHẠY, 21/21 pass. Team demo mới `mvGrMD0q` còn
-   token, user có thể tự bấm Settle now để test hoặc xoá tay (SQL tương tự mục 1, đổi team_id).
-4. **`75pw8g1f`** — đã fauceted (20.998995 USDC) nhưng user xác nhận KHÔNG còn admin token →
-   không force-settle được. Chỉ còn chờ cron tự settle khi hết cửa sổ cycle (~6 ngày nữa), hoặc
-   dùng team `mvGrMD0q` ở trên (còn token) để demo settle thật thay thế.
+- `0b1b000` fix: collapse app nav links and wrap member row on narrow viewports
+- `77c904a` docs: record reskin audit findings and evidence
+- Push: `acf3f07..77c904a master -> master` (origin, sau khi switch gh account đúng chủ repo
+  `anthonywright288` — lưu ý account hay bị flip về `charlesmartin273` giữa các lệnh git, phải
+  check `gh auth status` trước mỗi lần push).
+- Deploy prod: 2 lần trong phiên này, lần cuối `dpl_Fys7rb8dxpwGvEW8a2BRzsbZFj8M`, alias
+  `https://meritstream-six.vercel.app` không đổi, `/team/75pw8g1f` verify 200 sau deploy.
+- `git status` sạch sau cùng.
+
+## Đã đóng (không còn unresolved)
+
+1. Team test `6_pRFHu4` — đã xoá qua Supabase SQL editor.
+2. Mobile overflow — user confirm hết phải zoom trên điện thoại thật, tại production.
+3. `scripts/phase2-integration-test.ts` — đã chạy, 21/21 pass.
+4. Push + deploy — xong, evidence ở mục "Ship" trên.
+
+## Unresolved còn lại
+
+1. **`75pw8g1f`** — đã fauceted (20.998995 USDC) nhưng mất admin token vĩnh viễn (thiết kế:
+   không phục hồi được) → không force-settle được. Chỉ còn chờ cron tự settle khi hết cửa sổ
+   cycle (~6 ngày nữa từ 2026-08-04).
+2. **Team `mvGrMD0q`** (tạo lúc chạy integration test, repo `vercel/next.js`, pool
+   `0xdec7deD424437411f1E2D00390d5956E132Ed60b`, index 9) — còn nằm trong DB, CÒN admin token
+   (`51236b95e0adb6293b28e175ffcb550257a5fe970acd64a5365e5c1d992382f7`). User tự quyết định:
+   dùng để demo settle thật, hoặc xoá tay (SQL mẫu như team `6_pRFHu4`, đổi `team_id`).
