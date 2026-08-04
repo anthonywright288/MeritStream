@@ -10,7 +10,7 @@ export function MemberCard({ member }: { member: MemberSignalsDto }) {
   return (
     // workflow-card hover (design §5): lift 2px, surface brightens
     <Card className="transition-[translate,background-color,box-shadow] duration-(--dur-fast) ease-(--ease-frost) hover:-translate-y-0.5 hover:bg-(--surface-hover)">
-      <CardContent className="flex items-center justify-between gap-4 py-4">
+      <CardContent className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-4">
         <div className="min-w-0">
           <p className="font-semibold">@{member.username}</p>
           <p className="text-muted-foreground mt-0.5 truncate font-mono text-xs">{member.wallet}</p>

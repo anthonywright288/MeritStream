@@ -43,7 +43,7 @@ export function AppNav() {
         </Link>
         <div className="ml-auto flex items-center gap-1 text-sm font-medium">
           {teamId && (
-            <>
+            <div className="hidden items-center gap-1 sm:flex">
               <Link
                 href={`/team/${teamId}`}
                 className="rounded-(--radius-control) px-3 py-1.5 text-(--fg-secondary) transition-colors duration-(--dur-fast) hover:bg-(--surface-hover) hover:text-(--fg-primary)"
@@ -62,10 +62,10 @@ export function AppNav() {
               >
                 Public view
               </Link>
-              <span className="mx-2 hidden font-mono text-xs text-(--fg-tertiary) sm:inline">
+              <span className="mx-2 hidden font-mono text-xs text-(--fg-tertiary) lg:inline">
                 {teamId}
               </span>
-            </>
+            </div>
           )}
           <Link
             href="/create"
