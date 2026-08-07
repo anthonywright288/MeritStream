@@ -19,6 +19,8 @@ next-env.d.ts
 
 # Claude local config
 .claude/
+AGENTS.md
+CLAUDE.md
 
 .vercel
 .env*
