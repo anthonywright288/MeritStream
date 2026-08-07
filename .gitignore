@@ -17,9 +17,8 @@ out/
 next-env.d.ts
 *.tsbuildinfo
 
-# Claude local config (keep shared rules only)
-.claude/*
-!.claude/rules/
+# Claude local config
+.claude/
 
 .vercel
 .env*
